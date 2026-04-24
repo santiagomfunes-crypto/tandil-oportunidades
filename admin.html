@@ -239,15 +239,18 @@
     const loginError = document.getElementById('loginError');
     loginError.style.display = 'none';
 
-    // Verify key works by querying a protected resource (aprobado=false requires service role)
-    const testClient = createClient(SUPABASE_URL, key);
+    const opts = {
+      auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }
+    };
+    const testClient = createClient(SUPABASE_URL, key, opts);
+
+    // Verify by fetching all records (service role bypasses RLS and sees everything)
     const { data, error } = await testClient
       .from('comunidad_ofertas')
-      .select('id')
-      .eq('aprobado', false)
+      .select('id, aprobado')
       .limit(1);
 
-    if (error || !Array.isArray(data)) {
+    if (error) {
       loginError.textContent = 'Clave incorrecta o sin permisos.';
       loginError.style.display = 'block';
       document.getElementById('passwordInput').value = '';
@@ -394,7 +397,8 @@
   // Auto-login si ya autenticado en esta sesión
   const savedKey = sessionStorage.getItem('to_admin_key');
   if (savedKey) {
-    db = createClient(SUPABASE_URL, savedKey);
+    const opts = { auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false } };
+    db = createClient(SUPABASE_URL, savedKey, opts);
     showAdmin();
   }
 </script>
