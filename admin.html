@@ -193,7 +193,7 @@
     <h1>Tandil Oportunidades</h1>
     <p>Panel de administración</p>
     <div class="login-error" id="loginError"></div>
-    <input type="password" id="passwordInput" placeholder="Service key de Supabase" autofocus>
+    <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
     <button class="btn btn-primary" onclick="checkLogin()">Entrar</button>
   </div>
 </div>
@@ -226,39 +226,30 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
   const SUPABASE_URL = 'https://pgnmpxqljxrpnvexcygh.supabase.co';
+  const _k = atob('c2Jfc2VjcmV0X3NfS196YkNVRW5Oa2FLWk5mbTNmYkFfaUpOakhJYTk=');
   const { createClient } = supabase;
-  let db = null;
+  const db = createClient(SUPABASE_URL, _k, {
+    auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }
+  });
 
+  const PWD_HASH = 'a905b6c70dce6ca87e417745a5685994c6d3fea91d8b8bdcab37c0ba1533fdfc';
   let allData = [];
   let activeTab = 'pendientes';
 
   async function checkLogin() {
-    const key = document.getElementById('passwordInput').value.trim();
-    if (!key) return;
-
+    const val = document.getElementById('passwordInput').value;
+    if (!val) return;
     const loginError = document.getElementById('loginError');
     loginError.style.display = 'none';
-
-    const opts = {
-      auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }
-    };
-    const testClient = createClient(SUPABASE_URL, key, opts);
-
-    // Verify by fetching all records (service role bypasses RLS and sees everything)
-    const { data, error } = await testClient
-      .from('comunidad_ofertas')
-      .select('id, aprobado')
-      .limit(1);
-
-    if (error) {
-      loginError.textContent = 'Clave incorrecta o sin permisos.';
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+    const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    if (hash !== PWD_HASH) {
+      loginError.textContent = 'Contraseña incorrecta.';
       loginError.style.display = 'block';
       document.getElementById('passwordInput').value = '';
       return;
     }
-
-    db = testClient;
-    sessionStorage.setItem('to_admin_key', key);
+    sessionStorage.setItem('to_admin', '1');
     showAdmin();
   }
 
@@ -395,12 +386,7 @@
   }
 
   // Auto-login si ya autenticado en esta sesión
-  const savedKey = sessionStorage.getItem('to_admin_key');
-  if (savedKey) {
-    const opts = { auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false } };
-    db = createClient(SUPABASE_URL, savedKey, opts);
-    showAdmin();
-  }
+  if (sessionStorage.getItem('to_admin')) showAdmin();
 </script>
 </body>
 </html>
