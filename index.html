@@ -391,9 +391,9 @@
         <label for="tipo">Tipo de publicacion</label>
         <select id="tipo" name="tipo" required>
           <option value="" disabled selected>Seleccionar...</option>
-          <option value="Busco trabajo">Busco trabajo</option>
-          <option value="Ofrezco servicio">Ofrezco servicio</option>
-          <option value="Busco empleado">Busco empleado</option>
+          <option value="busco_trabajo">Busco trabajo</option>
+          <option value="ofrezco_servicio">Ofrezco servicio</option>
+          <option value="busco_empleado">Busco empleado</option>
         </select>
       </div>
       <div class="form-group">
@@ -440,9 +440,9 @@
 
     <div class="filter-bar" id="filterBar">
       <button class="filter-chip active" data-filter="all">Todos</button>
-      <button class="filter-chip" data-filter="Busco trabajo">Busco trabajo</button>
-      <button class="filter-chip" data-filter="Ofrezco servicio">Ofrezco servicio</button>
-      <button class="filter-chip" data-filter="Busco empleado">Busco empleado</button>
+      <button class="filter-chip" data-filter="busco_trabajo">Busco trabajo</button>
+      <button class="filter-chip" data-filter="ofrezco_servicio">Ofrezco servicio</button>
+      <button class="filter-chip" data-filter="busco_empleado">Busco empleado</button>
     </div>
 
     <div id="listingsContainer">
@@ -541,10 +541,16 @@
     return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
   }
 
+  const TIPO_LABEL = {
+    busco_trabajo: 'Busco trabajo',
+    ofrezco_servicio: 'Ofrezco servicio',
+    busco_empleado: 'Busco empleado'
+  };
+
   function badgeClass(tipo) {
-    if (tipo === 'Busco trabajo') return 'badge-busco-trabajo';
-    if (tipo === 'Ofrezco servicio') return 'badge-ofrezco-servicio';
-    if (tipo === 'Busco empleado') return 'badge-busco-empleado';
+    if (tipo === 'busco_trabajo') return 'badge-busco-trabajo';
+    if (tipo === 'ofrezco_servicio') return 'badge-ofrezco-servicio';
+    if (tipo === 'busco_empleado') return 'badge-busco-empleado';
     return '';
   }
 
@@ -552,7 +558,7 @@
     return `
       <div class="card ${o.destacado ? 'destacado' : ''}">
         <div class="card-top">
-          <span class="badge ${badgeClass(o.tipo)}">${o.tipo}</span>
+          <span class="badge ${badgeClass(o.tipo)}">${TIPO_LABEL[o.tipo] || o.tipo}</span>
           <span class="card-nombre">${escapeHtml(o.nombre)}</span>
         </div>
         <p class="card-desc">${escapeHtml(o.descripcion)}</p>
