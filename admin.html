@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Tandil Oportunidades</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a1a2e;
+      --gold: #8B6F3A;
+      --gold-light: #a8884d;
+      --cream: #F5F5F3;
+      --white: #fff;
+      --gray-dark: #3a3a4a;
+      --gray-mid: #7a7a8a;
+      --gray-light: #d4d4d8;
+      --green: #27ae60;
+      --red: #e74c3c;
+      --radius: 8px;
+      --shadow: 0 1px 4px rgba(26,26,46,0.08);
+    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--cream); color: var(--navy); }
+
+    /* LOGIN */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      box-shadow: 0 4px 20px rgba(26,26,46,0.12);
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .login-card h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .login-card p { font-size: 0.8rem; color: var(--gray-mid); margin-bottom: 24px; }
+    .login-card input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .login-card input:focus { border-color: var(--gold); }
+    .login-error { font-size: 0.8rem; color: var(--red); margin-bottom: 8px; display: none; }
+
+    /* ADMIN */
+    #adminScreen { display: none; }
+    header {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; }
+    header .stats { font-size: 0.78rem; opacity: 0.7; }
+    .logout-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--cream);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.1); }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-light);
+      padding: 0 24px;
+    }
+    .tab {
+      padding: 14px 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      color: var(--gray-mid);
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .tab .count {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 0.65rem;
+      margin-left: 6px;
+    }
+    .tab.active .count { background: var(--gold); }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+    .loading { text-align: center; padding: 60px; color: var(--gray-mid); font-size: 0.88rem; }
+    .empty { text-align: center; padding: 60px; color: var(--gray-mid); font-size: 0.88rem; }
+
+    /* CARD */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+      border-left: 4px solid var(--gray-light);
+    }
+    .card.pendiente { border-left-color: #f39c12; }
+    .card.aprobado  { border-left-color: var(--green); }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .card-meta-top { flex: 1; }
+    .card-nombre { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+    .badge {
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .badge-tipo-busco_trabajo    { background: #e8f4fd; color: #1a6fa6; }
+    .badge-tipo-ofrezco_servicio { background: #fef5e4; color: var(--gold); }
+    .badge-tipo-busco_empleado   { background: #f0edf8; color: #6c40b5; }
+    .badge-cat { background: var(--cream); color: var(--gray-dark); border: 1px solid var(--gray-light); }
+    .badge-pendiente { background: #fef5e4; color: #e67e22; }
+    .badge-aprobado  { background: #eafaf1; color: var(--green); }
+
+    .card-desc { font-size: 0.88rem; color: var(--gray-dark); line-height: 1.5; margin-bottom: 10px; }
+    .card-contacto { font-size: 0.82rem; color: var(--gold); font-weight: 700; }
+    .card-date { font-size: 0.75rem; color: var(--gray-mid); margin-top: 6px; }
+
+    .card-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.04em;
+      transition: opacity 0.15s;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-approve { background: var(--green); color: white; }
+    .btn-approve:hover:not(:disabled) { background: #219a52; }
+    .btn-reject  { background: var(--red); color: white; }
+    .btn-reject:hover:not(:disabled) { background: #c0392b; }
+    .btn-primary { background: var(--gold); color: white; width: 100%; padding: 12px; font-size: 0.85rem; }
+    .btn-primary:hover { background: var(--gold-light); }
+
+    @media (max-width: 480px) {
+      .card-header { flex-direction: column; }
+      .card-actions { width: 100%; }
+      .btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <h1>Tandil Oportunidades</h1>
+    <p>Panel de administración</p>
+    <div class="login-error" id="loginError"></div>
+    <input type="password" id="passwordInput" placeholder="Service key de Supabase" autofocus>
+    <button class="btn btn-primary" onclick="checkLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminScreen">
+  <header>
+    <div>
+      <h1>Tandil Oportunidades — Admin</h1>
+      <div class="stats" id="headerStats"></div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Salir</button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="pendientes" onclick="switchTab('pendientes')">
+      Pendientes <span class="count" id="countPendientes">0</span>
+    </button>
+    <button class="tab" data-tab="aprobados" onclick="switchTab('aprobados')">
+      Aprobados <span class="count" id="countAprobados">0</span>
+    </button>
+  </div>
+
+  <div class="container">
+    <div id="tabPendientes"></div>
+    <div id="tabAprobados" style="display:none"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://pgnmpxqljxrpnvexcygh.supabase.co';
+  const { createClient } = supabase;
+  let db = null;
+
+  let allData = [];
+  let activeTab = 'pendientes';
+
+  async function checkLogin() {
+    const key = document.getElementById('passwordInput').value.trim();
+    if (!key) return;
+
+    const loginError = document.getElementById('loginError');
+    loginError.style.display = 'none';
+
+    // Verify key works by querying a protected resource (aprobado=false requires service role)
+    const testClient = createClient(SUPABASE_URL, key);
+    const { data, error } = await testClient
+      .from('comunidad_ofertas')
+      .select('id')
+      .eq('aprobado', false)
+      .limit(1);
+
+    if (error || !Array.isArray(data)) {
+      loginError.textContent = 'Clave incorrecta o sin permisos.';
+      loginError.style.display = 'block';
+      document.getElementById('passwordInput').value = '';
+      return;
+    }
+
+    db = testClient;
+    sessionStorage.setItem('to_admin_key', key);
+    showAdmin();
+  }
+
+  document.getElementById('passwordInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkLogin();
+  });
+
+  function logout() {
+    sessionStorage.removeItem('to_admin');
+    document.getElementById('adminScreen').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+
+  async function showAdmin() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    await loadAll();
+  }
+
+  async function loadAll() {
+    renderLoading();
+    const { data, error } = await db
+      .from('comunidad_ofertas')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) { renderError(); return; }
+    allData = data || [];
+    updateCounts();
+    renderTab();
+  }
+
+  function updateCounts() {
+    const pendientes = allData.filter(o => !o.aprobado);
+    const aprobados  = allData.filter(o => o.aprobado);
+    document.getElementById('countPendientes').textContent = pendientes.length;
+    document.getElementById('countAprobados').textContent  = aprobados.length;
+    document.getElementById('headerStats').textContent =
+      `${aprobados.length} publicados · ${pendientes.length} pendientes`;
+  }
+
+  function switchTab(tab) {
+    activeTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    document.getElementById('tabPendientes').style.display = tab === 'pendientes' ? '' : 'none';
+    document.getElementById('tabAprobados').style.display  = tab === 'aprobados'  ? '' : 'none';
+    renderTab();
+  }
+
+  function renderLoading() {
+    document.getElementById('tabPendientes').innerHTML = '<div class="loading">Cargando...</div>';
+    document.getElementById('tabAprobados').innerHTML  = '<div class="loading">Cargando...</div>';
+  }
+
+  function renderError() {
+    document.getElementById('tabPendientes').innerHTML = '<div class="empty">Error al cargar datos.</div>';
+  }
+
+  function renderTab() {
+    const pendientes = allData.filter(o => !o.aprobado);
+    const aprobados  = allData.filter(o => o.aprobado);
+    document.getElementById('tabPendientes').innerHTML =
+      pendientes.length ? pendientes.map(renderCard).join('') : '<div class="empty">No hay envíos pendientes.</div>';
+    document.getElementById('tabAprobados').innerHTML  =
+      aprobados.length  ? aprobados.map(renderCard).join('')  : '<div class="empty">No hay publicaciones aprobadas.</div>';
+  }
+
+  const TIPO_LABEL = {
+    busco_trabajo: 'Busco trabajo',
+    ofrezco_servicio: 'Ofrezco servicio',
+    busco_empleado: 'Busco empleado'
+  };
+
+  function renderCard(o) {
+    const date = new Date(o.created_at).toLocaleString('es-AR', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    });
+    const actions = o.aprobado
+      ? `<button class="btn btn-reject" onclick="reject('${o.id}')">Dar de baja</button>`
+      : `<button class="btn btn-approve" onclick="approve('${o.id}')">Aprobar</button>
+         <button class="btn btn-reject"  onclick="reject('${o.id}')">Eliminar</button>`;
+
+    return `
+      <div class="card ${o.aprobado ? 'aprobado' : 'pendiente'}" id="card-${o.id}">
+        <div class="card-header">
+          <div class="card-meta-top">
+            <div class="card-nombre">${esc(o.nombre)}</div>
+            <div class="card-badges">
+              <span class="badge badge-tipo-${o.tipo}">${TIPO_LABEL[o.tipo] || o.tipo}</span>
+              <span class="badge badge-cat">${esc(o.categoria)}</span>
+              <span class="badge ${o.aprobado ? 'badge-aprobado' : 'badge-pendiente'}">${o.aprobado ? 'Publicado' : 'Pendiente'}</span>
+            </div>
+          </div>
+          <div class="card-actions">${actions}</div>
+        </div>
+        <p class="card-desc">${esc(o.descripcion)}</p>
+        <div class="card-contacto">${esc(o.contacto)}</div>
+        <div class="card-date">${esc(o.ciudad)} · ${date}</div>
+      </div>`;
+  }
+
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function approve(id) {
+    const btn = document.querySelector(`#card-${id} .btn-approve`);
+    if (btn) { btn.disabled = true; btn.textContent = '...'; }
+    const { error } = await db.from('comunidad_ofertas').update({ aprobado: true }).eq('id', id);
+    if (!error) {
+      const item = allData.find(o => o.id === id);
+      if (item) item.aprobado = true;
+      updateCounts();
+      renderTab();
+    }
+  }
+
+  async function reject(id) {
+    const item = allData.find(o => o.id === id);
+    const action = item?.aprobado ? 'dar de baja' : 'eliminar';
+    if (!confirm(`¿Seguro que querés ${action} este envío?`)) return;
+
+    const btn = document.querySelector(`#card-${id} .btn-reject`);
+    if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+    if (item?.aprobado) {
+      const { error } = await db.from('comunidad_ofertas').update({ aprobado: false }).eq('id', id);
+      if (!error) { item.aprobado = false; updateCounts(); renderTab(); }
+    } else {
+      const { error } = await db.from('comunidad_ofertas').delete().eq('id', id);
+      if (!error) { allData = allData.filter(o => o.id !== id); updateCounts(); renderTab(); }
+    }
+  }
+
+  // Auto-login si ya autenticado en esta sesión
+  const savedKey = sessionStorage.getItem('to_admin_key');
+  if (savedKey) {
+    db = createClient(SUPABASE_URL, savedKey);
+    showAdmin();
+  }
+</script>
+</body>
+</html>
