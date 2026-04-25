@@ -223,14 +223,24 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://pgnmpxqljxrpnvexcygh.supabase.co';
+  const BASE = 'https://pgnmpxqljxrpnvexcygh.supabase.co/rest/v1';
   const _k = atob('c2Jfc2VjcmV0X3NfS196YkNVRW5Oa2FLWk5mbTNmYkFfaUpOakhJYTk=');
-  const { createClient } = supabase;
-  const db = createClient(SUPABASE_URL, _k, {
-    auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }
-  });
+  const H = () => ({ 'apikey': _k, 'Authorization': 'Bearer ' + _k, 'Content-Type': 'application/json', 'Prefer': 'return=representation' });
+
+  async function sbGet(params) {
+    const r = await fetch(`${BASE}/comunidad_ofertas?${params}&order=created_at.desc`, { headers: H() });
+    if (!r.ok) return { error: true };
+    return { data: await r.json() };
+  }
+  async function sbPatch(id, body) {
+    const r = await fetch(`${BASE}/comunidad_ofertas?id=eq.${id}`, { method: 'PATCH', headers: H(), body: JSON.stringify(body) });
+    return { error: !r.ok };
+  }
+  async function sbDelete(id) {
+    const r = await fetch(`${BASE}/comunidad_ofertas?id=eq.${id}`, { method: 'DELETE', headers: H() });
+    return { error: !r.ok };
+  }
 
   const PWD_HASH = 'a905b6c70dce6ca87e417745a5685994c6d3fea91d8b8bdcab37c0ba1533fdfc';
   let allData = [];
@@ -271,11 +281,7 @@
 
   async function loadAll() {
     renderLoading();
-    const { data, error } = await db
-      .from('comunidad_ofertas')
-      .select('*')
-      .order('created_at', { ascending: false });
-
+    const { data, error } = await sbGet('select=*');
     if (error) { renderError(); return; }
     allData = data || [];
     updateCounts();
@@ -359,12 +365,11 @@
   async function approve(id) {
     const btn = document.querySelector(`#card-${id} .btn-approve`);
     if (btn) { btn.disabled = true; btn.textContent = '...'; }
-    const { error } = await db.from('comunidad_ofertas').update({ aprobado: true }).eq('id', id);
+    const { error } = await sbPatch(id, { aprobado: true });
     if (!error) {
       const item = allData.find(o => o.id === id);
       if (item) item.aprobado = true;
-      updateCounts();
-      renderTab();
+      updateCounts(); renderTab();
     }
   }
 
@@ -372,15 +377,13 @@
     const item = allData.find(o => o.id === id);
     const action = item?.aprobado ? 'dar de baja' : 'eliminar';
     if (!confirm(`¿Seguro que querés ${action} este envío?`)) return;
-
     const btn = document.querySelector(`#card-${id} .btn-reject`);
     if (btn) { btn.disabled = true; btn.textContent = '...'; }
-
     if (item?.aprobado) {
-      const { error } = await db.from('comunidad_ofertas').update({ aprobado: false }).eq('id', id);
+      const { error } = await sbPatch(id, { aprobado: false });
       if (!error) { item.aprobado = false; updateCounts(); renderTab(); }
     } else {
-      const { error } = await db.from('comunidad_ofertas').delete().eq('id', id);
+      const { error } = await sbDelete(id);
       if (!error) { allData = allData.filter(o => o.id !== id); updateCounts(); renderTab(); }
     }
   }
