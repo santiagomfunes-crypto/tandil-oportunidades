@@ -7,475 +7,1046 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a1a; }
-  header { background: #0B1F33; color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
-  header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  header { background: #0B1F33; color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  header h1 { font-size: 18px; font-weight: 700; }
   header p { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
   .badge-count { background: #7AB591; color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
-  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+  .container { max-width: 980px; margin: 0 auto; padding: 24px 16px; }
+  .toolbar { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .search-bar { border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px 12px; font-size: 13px; flex: 1; min-width: 200px; outline: none; }
+  .search-bar:focus { border-color: #7AB591; }
+  .btn-accion { font-size: 11px; font-weight: 600; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; }
+  .btn-accion.verde { background: #7AB591; color: white; }
+  .btn-accion.gris { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+  .seleccion-panel { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; display: none; }
+  .seleccion-panel.visible { display: block; }
+  .seleccion-panel p { font-size: 13px; font-weight: 600; color: #92400e; margin-bottom: 8px; }
+  .seleccion-lista { font-size: 12px; color: #78350f; line-height: 1.8; }
   .section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #7AB591; margin-bottom: 12px; margin-top: 28px; }
-  .section-title:first-child { margin-top: 0; }
-  .priority-banner { background: #fff3cd; border-left: 4px solid #f59e0b; padding: 12px 16px; margin-bottom: 20px; border-radius: 0 6px 6px 0; }
-  .priority-banner p { font-size: 12px; color: #92400e; font-weight: 600; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 8px; }
-  .card { background: white; border-radius: 8px; padding: 16px; border: 1px solid #e5e7eb; position: relative; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; margin-bottom: 8px; }
+  .card { background: white; border-radius: 8px; border: 1px solid #e5e7eb; overflow: hidden; }
   .card.priority { border-left: 3px solid #ef4444; }
   .card.roca { border-left: 3px solid #7AB591; }
   .card.comprador { border-left: 3px solid #3b82f6; }
+  .card-top { padding: 14px 16px; }
   .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
   .card-name { font-size: 14px; font-weight: 700; color: #0B1F33; }
   .card-phone { font-size: 11px; color: #6b7280; margin-top: 1px; }
-  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
   .tag-hot { background: #fee2e2; color: #ef4444; }
   .tag-credito { background: #dbeafe; color: #1d4ed8; }
   .tag-roca { background: #d1fae5; color: #065f46; }
   .tag-visita { background: #ede9fe; color: #5b21b6; }
-  .card-busca { font-size: 12px; color: #374151; line-height: 1.5; margin-bottom: 10px; }
+  .card-busca { font-size: 12px; color: #374151; line-height: 1.5; margin-bottom: 8px; }
   .card-busca strong { color: #0B1F33; }
   .card-meta { font-size: 10px; color: #9ca3af; margin-bottom: 10px; }
-  .btn { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 5px; text-decoration: none; transition: opacity 0.15s; }
-  .btn:hover { opacity: 0.8; }
-  .btn-chat { background: #0B1F33; color: white; }
-  .btn-wa { background: #25D366; color: white; }
-  .search-bar { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 14px; width: 100%; font-size: 13px; margin-bottom: 20px; outline: none; }
-  .search-bar:focus { border-color: #7AB591; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 4px; }
   .dot-open { background: #22c55e; }
   .dot-snoozed { background: #f59e0b; }
   .dot-pending { background: #94a3b8; }
-  .stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
-  .stat { background: white; border-radius: 8px; padding: 14px 20px; border: 1px solid #e5e7eb; text-align: center; flex: 1; min-width: 100px; }
-  .stat-n { font-size: 28px; font-weight: 800; color: #0B1F33; }
-  .stat-l { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; margin-top: 2px; }
+  .card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 5px; text-decoration: none; border: none; cursor: pointer; }
+  .btn-wa { background: #25D366; color: white; }
+  .btn-toggle { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+  .btn-delete { background: none; border: none; cursor: pointer; color: #d1d5db; font-size: 13px; padding: 2px 4px; border-radius: 4px; }
+  .btn-delete:hover { color: #ef4444; background: #fee2e2; }
+  .checkbox-wrap { font-size: 11px; color: #6b7280; display: flex; align-items: center; gap: 4px; cursor: pointer; margin-left: auto; }
+  .chat-box { display: none; border-top: 1px solid #f3f4f6; background: #f9fafb; max-height: 320px; overflow-y: auto; }
+  .chat-box.open { display: block; }
+  .chat-inner { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .msg-in, .msg-out { max-width: 85%; padding: 8px 10px; border-radius: 10px; font-size: 12px; line-height: 1.5; position: relative; }
+  .msg-in { background: white; border: 1px solid #e5e7eb; align-self: flex-start; border-bottom-left-radius: 2px; color: #1a1a1a; }
+  .msg-out { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 2px; color: #1a1a1a; }
+  .msg-time { display: block; font-size: 9px; color: #9ca3af; margin-top: 4px; text-align: right; }
+  .no-msgs { font-size: 12px; color: #9ca3af; text-align: center; padding: 20px; }
   .hidden { display: none !important; }
+  .stats { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat { background: white; border-radius: 8px; padding: 12px 18px; border: 1px solid #e5e7eb; text-align: center; flex: 1; min-width: 80px; }
+  .stat-n { font-size: 26px; font-weight: 800; color: #0B1F33; }
+  .stat-l { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; margin-top: 2px; }
 </style>
 </head>
 <body>
-
 <header>
   <div>
     <h1>Recontacto · Altavista Otero</h1>
-    <p>Dashboard interno — Fernando · Actualizado 04/05/2026</p>
+    <p>Dashboard interno — Fernando · 04/05/2026</p>
   </div>
-  <span class="badge-count">39 para contactar</span>
+  <span class="badge-count">39 leads</span>
 </header>
 
 <div class="container">
-
   <div class="stats">
-    <div class="stat"><div class="stat-n" style="color:#ef4444">8</div><div class="stat-l">Prioridad alta</div></div>
+    <div class="stat"><div class="stat-n" style="color:#ef4444">8</div><div class="stat-l">Prioridad</div></div>
     <div class="stat"><div class="stat-n" style="color:#7AB591">13</div><div class="stat-l">Roca 36</div></div>
     <div class="stat"><div class="stat-n" style="color:#3b82f6">18</div><div class="stat-l">Compradores</div></div>
-    <div class="stat"><div class="stat-n">39</div><div class="stat-l">Total</div></div>
   </div>
 
-  <input type="text" class="search-bar" placeholder="Buscar por nombre o qué busca..." oninput="filtrar(this.value)" />
-
-  <div class="priority-banner">
-    <p>⚡ Empezar por los de borde rojo — leads con intención clara y sin respuesta</p>
+  <div class="toolbar">
+    <input type="text" class="search-bar" placeholder="Buscar por nombre, qué busca, zona, precio..." oninput="filtrar(this.value)" />
+    <button class="btn-accion gris" onclick="expandirTodos()">📋 Ver todos los chats</button>
+    <button class="btn-accion gris" onclick="contraerTodos()">▲ Contraer chats</button>
+    <button class="btn-accion verde" onclick="copiarSeleccion()">📋 Copiar selección</button>
   </div>
 
-  <!-- PRIORIDAD ALTA -->
-  <p class="section-title">Prioridad alta</p>
-  <div class="grid" id="grid-priority">
+  <div class="seleccion-panel" id="seleccion-panel">
+    <p>✅ Seleccionados: <span id="seleccion-count">0</span></p>
+    <div class="seleccion-lista" id="seleccion-lista"></div>
+  </div>
 
-    <div class="card priority" data-text="gladys depto 1 dormitorio renta renta">
-      <div class="card-header">
-        <div><div class="card-name">Gladys</div><div class="card-phone">+5492494506415</div></div>
+  <p class="section-title">⚡ Prioridad alta</p>
+  <div class="grid"><div class="card priority" id="card-239" data-text="gladys depto 1 dorm para renta, zona rivadavia–roca, usd 50.000–55.000. escribió hoy y el bot no pudo enviarle nada. hoy">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Gladys</div>
+        <div class="card-phone">+5492494506415</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
         <span class="tag tag-hot">HOY</span>
+        <button class="btn-delete" onclick="eliminar(239)" title="Eliminar">✕</button>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm para renta, zona Rivadavia–Roca, USD 50.000–55.000. Escribió hoy y el bot no pudo enviarle nada.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494680104" target="_blank">💬 WhatsApp</a>
     </div>
-
-    <div class="card priority" data-text="gustavo galvan credito nacion iaf 2 ambientes">
-      <div class="card-header">
-        <div><div class="card-name">Gustavo Galvan</div><div class="card-phone">+5492494680104</div></div>
+    <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm para renta, zona Rivadavia–Roca, USD 50.000–55.000. Escribió hoy y el bot no pudo enviarle nada.</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494506415" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(239)">📋 Ver chat (10 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="239" data-name="Gladys"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-239">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola Santiago, bien dia, cómo estás! Estoy viendo la posibilidad de comprar algún departamento de 1 dormitorio, nada urgente, para renta. Recién estoy comenzando con esto. Las zonas q me interesarían, Rivadavia hasta Roca entre Avellaneda y Montevideo, de 1 dormitorio en Pb o 1er piso. Igualmente no es tan estricta la ubicación… por ahí venis y me decís q tenes algo en Pellegrini y San Lorenzo (es un ej.) y por ahí me va</span><span class="msg-time">04/05 12:18</span></div><div class="msg-in"><span class="msg-content">No estoy buscando nada de categoría</span><span class="msg-time">04/05 12:18</span></div><div class="msg-out"><span class="msg-content">Dale, ya tengo el perfil: departamento de 1 dormitorio para renta, con zona flexible y preferencia por PB o 1er piso 🏠</span><span class="msg-time">04/05 12:20</span></div><div class="msg-out"><span class="msg-content">🚨 The message could not be sent. Please check your connection. _[object Object]_</span><span class="msg-time">04/05 12:20</span></div><div class="msg-out"><span class="msg-content">Pasame un presupuesto aproximado en USD y te paso opciones que encajen con eso.</span><span class="msg-time">04/05 12:20</span></div><div class="msg-in"><span class="msg-content">50 / 55</span><span class="msg-time">04/05 12:24</span></div><div class="msg-in"><span class="msg-content">También tengo q ver si puede haber algo en esos valores o si debo seguir ahorrando un tiempo más</span><span class="msg-time">04/05 12:25</span></div><div class="msg-in"><span class="msg-content">Ayer cuando te escribí creo q había algo de un proyecto al pozo y decía cuotas de 940 dólares</span><span class="msg-time">04/05 12:26</span></div><div class="msg-in"><span class="msg-content">Es muchísimo eso, las cuotas… por si algo te surge, ténseme presente</span><span class="msg-time">04/05 12:38</span></div><div class="msg-in"><span class="msg-content">Quizás también en algún caso se puede financiar algo, poquito. Gracias por tu atención</span><span class="msg-time">04/05 12:39</span></div></div>
+  </div>
+</div><div class="card priority" id="card-197" data-text="gustavo galvan depto apto crédito nación e iaf, pre-adjudicados en ambos. usd 50.000 aprox. listo para comprar. crédito">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Gustavo Galvan</div>
+        <div class="card-phone">+5492494680104</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
         <span class="tag tag-credito">CRÉDITO</span>
+        <button class="btn-delete" onclick="eliminar(197)" title="Eliminar">✕</button>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto apto crédito Nación e IAF, pre-adjudicados en ambos. USD 50.000 aprox. Listo para comprar.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Depto apto crédito Nación e IAF, pre-adjudicados en ambos. USD 50.000 aprox. Listo para comprar.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494680104" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(197)">📋 Ver chat (3 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="197" data-name="Gustavo Galvan"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-197">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola Gustavo, ¿cómo estás?<br><br>Disculpa que tardé en contestarte. Estuvimos en cambio de oficina y un poco de cambio de gestiones, así que te pido disculpas por la demora.<br><br>Ahora sí estamos ya operativamente trabajando de nuevo, así que estamos listos para ayudarte con tu búsqueda.<br><br>Por lo que me comentaste, estás buscando un departamento de aproximadamente $50,000 en Nación, o sea que tiene que ser apto para crédito, eso es lo que te da Nación. Así ajustamos la búsqueda y podemos mandarte opciones.</span><span class="msg-time">29/04 14:27</span></div><div class="msg-in"><span class="msg-content">Buen día , si si</span><span class="msg-time">29/04 15:29</span></div><div class="msg-in"><span class="msg-content">Nacion o iaf, tengo los dos préstamos pre-adjudicados</span><span class="msg-time">29/04 15:29</span></div></div>
+  </div>
+</div><div class="card priority" id="card-182" data-text="ana garcia depto 1 dorm zona céntrica, usd 60.000. confirmó que sigue buscando y pidió opciones. activa">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Ana Garcia</div>
+        <div class="card-phone">+5492494350778</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-hot">ACTIVA</span>
+        <button class="btn-delete" onclick="eliminar(182)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm zona céntrica, USD 60.000. Confirmó que sigue buscando y pidió opciones.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494350778" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(182)">📋 Ver chat (3 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="182" data-name="Ana Garcia"> Seleccionar</label>
     </div>
-
-    <div class="card priority" data-text="ana garcia 1 dormitorio centrico 60000">
-      <div class="card-header">
-        <div><div class="card-name">Ana Garcia</div><div class="card-phone">+5492494350778</div></div>
-        <span class="tag tag-hot">ACTIVA</span>
+  </div>
+  <div class="chat-box" id="chat-182">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola Ana, buen día. ¿Cómo estás? Quería consultarte si sigue pendiente tu búsqueda de departamento de un dormitorio en zona céntrica por $60,000 aproximadamente.</span><span class="msg-time">29/04 14:25</span></div><div class="msg-in"><span class="msg-content">Hola si si sigo buscando, estoy por señar uno igual</span><span class="msg-time">29/04 14:25</span></div><div class="msg-in"><span class="msg-content">Pero si tenes algobpasame</span><span class="msg-time">29/04 14:25</span></div></div>
+  </div>
+</div><div class="card priority" id="card-184" data-text="facundo gimenez búsqueda activa, confirmó 'seguimos buscando'. nunca recibió opciones. activa">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Facundo Gimenez</div>
+        <div class="card-phone">+5492494563423</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm zona céntrica, USD 60.000. Confirmó que sigue buscando y pidió opciones explícitamente.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-hot">ACTIVA</span>
+        <button class="btn-delete" onclick="eliminar(184)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Búsqueda activa, confirmó 'seguimos buscando'. Nunca recibió opciones.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494563423" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(184)">📋 Ver chat (5 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="184" data-name="Facundo Gimenez"> Seleccionar</label>
     </div>
-
-    <div class="card priority" data-text="facundo gimenez busqueda activa 2 ambientes">
-      <div class="card-header">
-        <div><div class="card-name">Facundo Gimenez</div><div class="card-phone">+5492494563423</div></div>
-        <span class="tag tag-hot">ACTIVA</span>
+  </div>
+  <div class="chat-box" id="chat-184">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Buen día, Facundo, ¿cómo estás? Te pido disculpas de que nos quedó tu conversación abajo. Quería consultarte. ¿Sigue pendiente la búsqueda?</span><span class="msg-time">29/04 14:25</span></div><div class="msg-in"><span class="msg-content">Hola buenas tardes!</span><span class="msg-time">29/04 14:31</span></div><div class="msg-in"><span class="msg-content">Sisi todavía seguimos en busqueda</span><span class="msg-time">29/04 14:31</span></div><div class="msg-out"><span class="msg-content">Perfecto, dejame ver bien que puedo tener y estamos en contacto</span><span class="msg-time">29/04 15:29</span></div><div class="msg-in"><span class="msg-content">dale gracias</span><span class="msg-time">29/04 15:34</span></div></div>
+  </div>
+</div><div class="card priority" id="card-231" data-text="natalia san lorenzo 420, 2 dorm, usd 150.000. pidió visita, nunca se confirmó. visita">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Natalia</div>
+        <div class="card-phone">+5492494307494</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Búsqueda activa (confirmó "seguimos buscando"). Santiago dijo "dejame ver qué tengo" y nunca envió nada.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494307494" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card priority" data-text="natalia san lorenzo 420 2 dormitorios visita">
-      <div class="card-header">
-        <div><div class="card-name">Natalia</div><div class="card-phone">+5492494307494</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
         <span class="tag tag-visita">VISITA</span>
+        <button class="btn-delete" onclick="eliminar(231)" title="Eliminar">✕</button>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> San Lorenzo 420, 2 dorm, USD 150.000. Pidió visita explícitamente, nunca se confirmó.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494308052" target="_blank">💬 WhatsApp</a>
     </div>
-
-    <div class="card priority" data-text="lisardo romero 2 dormitorios 150000 160000">
-      <div class="card-header">
-        <div><div class="card-name">Lisardo Romero</div><div class="card-phone">+5492494308052</div></div>
+    <div class="card-busca"><strong>Busca:</strong> San Lorenzo 420, 2 dorm, USD 150.000. Pidió visita, nunca se confirmó.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494307494" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(231)">📋 Ver chat (4 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="231" data-name="Natalia"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-231">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil. San Lorenzo 420, pode.os coordinar una visita?<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil.<br><br>Casas y departamentos desde...<br>https://fb.me/7yiYKAoVq</span><span class="msg-time">03/05 18:20</span></div><div class="msg-out"><span class="msg-content">Dale, coordinamos la visita a San Lorenzo 420 📅</span><span class="msg-time">03/05 18:22</span></div><div class="msg-out"><span class="msg-content">Antes decime cuántos ambientes buscás y qué presupuesto manejás en USD, así te confirmo si es la indicada.</span><span class="msg-time">03/05 18:22</span></div><div class="msg-in"><span class="msg-content">2 dormitorios <br>150.000</span><span class="msg-time">03/05 18:22</span></div></div>
+  </div>
+</div><div class="card priority" id="card-108" data-text="lisardo romero depto 2 dorm, hasta usd 160.000. conocido directo. mensaje sin respuesta. sin respuesta">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Lisardo Romero</div>
+        <div class="card-phone">+5492494308052</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
         <span class="tag tag-hot">SIN RESPUESTA</span>
+        <button class="btn-delete" onclick="eliminar(108)" title="Eliminar">✕</button>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm, hasta USD 150.000–160.000. Conocido directo. Mensaje directo sin respuesta.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm, hasta USD 160.000. Conocido directo. Mensaje sin respuesta.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494308052" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(108)">📋 Ver chat (2 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="108" data-name="Lisardo Romero"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-108">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Santii como va</span><span class="msg-time">24/04 13:51</span></div><div class="msg-in"><span class="msg-content">Pásame deptos de 2 dorm hasta 150/160</span><span class="msg-time">24/04 13:51</span></div></div>
+  </div>
+</div><div class="card priority" id="card-215" data-text="patricia cordoba corredora con cliente para pozo roca 36, entrada usd 15-18k + cuotas, 2 ambientes. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Patricia Cordoba</div>
+        <div class="card-phone">+5492494647315</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(215)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Corredora con cliente para pozo Roca 36, entrada USD 15-18k + cuotas, 2 ambientes.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494647315" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(215)">📋 Ver chat (17 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="215" data-name="Patricia Cordoba"> Seleccionar</label>
     </div>
-
-    <div class="card priority" data-text="patricia cordoba inmobiliaria pozo roca 15000 entrada">
-      <div class="card-header">
-        <div><div class="card-name">Patricia Cordoba</div><div class="card-phone">+5492494647315</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-215">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://fb.me/8FrVlMLf8</span><span class="msg-time">01/05 01:27</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">01/05 01:29</span></div><div class="msg-out"><span class="msg-content">Contame qué zona te interesa, cuántos ambientes buscás y con qué presupuesto manejás en USD.</span><span class="msg-time">01/05 01:29</span></div><div class="msg-in"><span class="msg-content">Hola buen día <br>Busco al pozo <br>Para un cliente <br>Que sea con una entrega mínima aprox 15/18000 usd <br>Y cuotas</span><span class="msg-time">02/05 13:47</span></div><div class="msg-out"><span class="msg-content">Dale, buscás algo al pozo con entrega inicial y cuotas.<br><br>Pasame zona, tipo de propiedad y cuántos ambientes buscás, y te paso opciones de Tandil. Lo de la financiación y condiciones de pago lo maneja Santiago directamente.</span><span class="msg-time">02/05 13:49</span></div><div class="msg-in"><span class="msg-content">Dale x fi<br>La zona no tendría quizás tanta relevancia <br>Si la calidad de  construcción <br><br>Y de 2 ambientes...</span><span class="msg-time">02/05 13:52</span></div><div class="msg-out"><span class="msg-content">Perfecto, entonces priorizamos 2 ambientes y buena calidad de construcción 🏠</span><span class="msg-time">02/05 13:54</span></div><div class="msg-out"><span class="msg-content">Para pasarte opciones al pozo bien filtradas, necesito el valor total aproximado que busca tu cliente o la cuota máxima que podría pagar por mes. La parte de financiación la maneja Santiago y se la paso.</span><span class="msg-time">02/05 13:54</span></div><div class="msg-in"><span class="msg-content">No no sabría decirte <br><br>El propone esa entrega<br>Y vos tenés que decir de que valor hablan<br><br>Es un cliente Potable ..tiene poder adquisitivo para afrontar cuotas</span><span class="msg-time">02/05 13:58</span></div><div class="msg-in"><span class="msg-content">De acuerdo a lo que hablé <br>Ahí de 60/70000 usd aprox</span><span class="msg-time">02/05 13:59</span></div><div class="msg-out"><span class="msg-content">Dale, ya tengo el rango: estarían hablando de algo de USD 60.000 a 70.000 en total, con entrega de 15 a 18 mil y el resto en cuotas.</span><span class="msg-time">02/05 14:00</span></div><div class="msg-out"><span class="msg-content">Te paso una opción de referencia:</span><span class="msg-time">02/05 14:00</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento en Liniers y Cuba<br>📐 3 amb · 0 m²<br>💰 USD 60.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmokeefhh0005oi01iuw1jt0z</span><span class="msg-time">02/05 14:00</span></div><div class="msg-out"><span class="msg-content">Le paso el mensaje a Santiago y se contacta con vos a la brevedad.</span><span class="msg-time">02/05 14:00</span></div><div class="msg-in"><span class="msg-content">Ok dale</span><span class="msg-time">02/05 14:02</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">02/05 14:19</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">02/05 14:19</span></div></div>
+  </div>
+</div><div class="card priority" id="card-154" data-text="mar búsqueda activa confirmada. nunca recibió propiedades concretas. activa">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Mar</div>
+        <div class="card-phone">+5492494690275</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Corredora con cliente para pozo Roca 36, entrada USD 15.000–18.000 + cuotas, 2 ambientes. Espera condiciones.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494690275" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card priority" data-text="mar busqueda activa departamento">
-      <div class="card-header">
-        <div><div class="card-name">Mar</div><div class="card-phone">+5492494690275</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
         <span class="tag tag-hot">ACTIVA</span>
+        <button class="btn-delete" onclick="eliminar(154)" title="Eliminar">✕</button>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Búsqueda activa confirmada. Santiago le dijo que hay ofertas nuevas pero nunca le envió nada concreto.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Búsqueda activa confirmada. Nunca recibió propiedades concretas.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494690275" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(154)">📋 Ver chat (2 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="154" data-name="Mar"> Seleccionar</label>
     </div>
-
   </div>
+  <div class="chat-box" id="chat-154">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola, buen día. ¿Cómo estás? Quería consultarte si se activa tu búsqueda de departamentos en esos valores. Puede ser que haya un par de ofertas nuevas en el mercado, así que si estás interesada, podemos hablar.</span><span class="msg-time">29/04 14:17</span></div><div class="msg-in"><span class="msg-content">Hola como estas ?? Si aun estoy en búsqueda!!!</span><span class="msg-time">29/04 15:30</span></div></div>
+  </div>
+</div></div>
 
-  <!-- ROCA 36 -->
   <p class="section-title">Interesados en Roca 36 / Fideicomiso</p>
-  <div class="grid" id="grid-roca">
-
-    <div class="card roca" data-text="silvia garcia roca 36 fideicomiso inversion">
-      <div class="card-header">
-        <div><div class="card-name">Silvia Garcia</div><div class="card-phone">+5492262563890</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  <div class="grid"><div class="card roca" id="card-238" data-text="silvia garcia inversión al pozo, primera vez, hasta usd 100.000, prioridad renta futura. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Silvia Garcia</div>
+        <div class="card-phone">+5492262563890</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Inversión al pozo, primera vez, hasta USD 100.000, prioridad renta futura. Santiago la contactó hoy.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(238)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Inversión al pozo, primera vez, hasta USD 100.000, prioridad renta futura.</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492262563890" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(238)">📋 Ver chat (6 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="238" data-name="Silvia Garcia"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-238">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿qué*buscás*priorizar?: Renta futura al finalizar<br>¿ya*invertiste*alguna*vez*en*pozo*o_fideicomiso?: No<br>¿qué*rango*de*inversión*tenés_previsto?: Hasta USD 100.000<br>full_name: Silvia Garcia<br>email: garciasi@agro.uba.ar<br>phone_number: +542262563890<br><br><br>**Fideicomiso Roca 36 · Inversión en Tandi...**<br>Roca 36 es una oportunidad para invertir en Tandil desde etapa de desarroll...<br>https://www.instagram.com/p/DX3C1UxjN5f/</span><span class="msg-time">03/05 23:08</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠<br><br>Le paso el mensaje a Santiago y se contacta con vos a la brevedad.</span><span class="msg-time">03/05 23:10</span></div><div class="msg-in"><span class="msg-content">buenas noches! ok espero la info...</span><span class="msg-time">03/05 23:47</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">04/05 11:21</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">04/05 11:21</span></div><div class="msg-out"><span class="msg-content">Buen día Silvia</span><span class="msg-time">04/05 11:21</span></div></div>
+  </div>
+</div><div class="card roca" id="card-223" data-text="cach (cristian chocobar) primera vez invirtiendo, quiere hablar por teléfono. recibió folleto, espera llamada. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Cach (Cristian Chocobar)</div>
+        <div class="card-phone">+5493875607019</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(223)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Primera vez invirtiendo, quiere hablar por teléfono. Recibió folleto, espera llamada.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5493875607019" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(223)">📋 Ver chat (4 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="223" data-name="Cach (Cristian Chocobar)"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="cach chocobar roca 36 primera vez hablar">
-      <div class="card-header">
-        <div><div class="card-name">Cach (Cristian Chocobar)</div><div class="card-phone">+5493875607019</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-223">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿ya*invertiste*alguna*vez*en*pozo*o_fideicomiso?: No<br>full_name: Chocobar Criistian Cacn<br>email: chocobarcristian45@gmail.com<br>¿qué*buscás*priorizar?: Entender condiciones<br>¿qué*rango*de*inversión*tenés_previsto?: Prefiero hablarlo<br>phone_number: +543875607019</span><span class="msg-time">03/05 03:19</span></div><div class="msg-out"><span class="msg-content">Dale, ya le pasé tu mensaje a Santiago.  <br>Te va a responder por este canal con las condiciones y opciones de inversión.</span><span class="msg-time">03/05 03:21</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">03/05 21:51</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">03/05 21:51</span></div></div>
+  </div>
+</div><div class="card roca" id="card-212" data-text="dany 🌹 edificio avellaneda y roca, vio en redes. espera contacto de santiago. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Dany 🌹</div>
+        <div class="card-phone">+5492494692661</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, primera vez invirtiendo, quiere hablarlo por teléfono. Recibió folleto, espera llamada.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(212)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Edificio Avellaneda y Roca, vio en redes. Espera contacto de Santiago.</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494692661" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(212)">📋 Ver chat (13 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="212" data-name="Dany 🌹"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="dany roca 36 avellaneda fideicomiso">
-      <div class="card-header">
-        <div><div class="card-name">Dany 🌹</div><div class="card-phone">+5492494692661</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-212">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://www.instagram.com/p/DXhvU_pjO5d/</span><span class="msg-time">30/04 21:39</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">30/04 21:41</span></div><div class="msg-out"><span class="msg-content">Contame qué zona de Tandil te interesa, cuántos ambientes buscás y con qué presupuesto manejás en USD.</span><span class="msg-time">30/04 21:41</span></div><div class="msg-in"><span class="msg-content">Vi un edificio q se estaba x construir en Avellaneda y roca</span><span class="msg-time">30/04 21:51</span></div><div class="msg-out"><span class="msg-content">Sí, ese proyecto en Avellaneda y Roca lo maneja Santiago directamente. Te paso el mensaje y te contesta él.</span><span class="msg-time">30/04 21:53</span></div><div class="msg-out"><span class="msg-content">Si querés, también decime cuántos ambientes buscás y tu presupuesto en USD así te muestro opciones parecidas.</span><span class="msg-time">30/04 21:53</span></div><div class="msg-in"><span class="msg-content">No justo vi esa publicación y quería saber el valor</span><span class="msg-time">30/04 22:01</span></div><div class="msg-out"><span class="msg-content">Eso lo maneja Santiago directamente, se lo paso y te contesta él.  <br>Si querés, también te puedo mostrar opciones similares en Tandil.</span><span class="msg-time">30/04 22:02</span></div><div class="msg-in"><span class="msg-content">Muchas gracias!</span><span class="msg-time">30/04 22:06</span></div><div class="msg-in"><span class="msg-content">Hola Sisi</span><span class="msg-time">03/05 22:18</span></div><div class="msg-in"><span class="msg-content">Me paso la info</span><span class="msg-time">03/05 22:18</span></div><div class="msg-in"><span class="msg-content">Gracias</span><span class="msg-time">03/05 22:18</span></div><div class="msg-out"><span class="msg-content">Perfecto, dale.  <br>Si querés, te ayudo a comparar esa opción con otras similares en Tandil.</span><span class="msg-time">03/05 22:20</span></div></div>
+  </div>
+</div><div class="card roca" id="card-222" data-text="eduardo uzcudun proyecto avellaneda y roca. esperaba contacto por financiación. sin seguimiento. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Eduardo Uzcudun</div>
+        <div class="card-phone">+5492262643056</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Edificio en construcción Avellaneda y Roca. Vio en redes. Espera que Santiago la contacte directamente.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(222)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Proyecto Avellaneda y Roca. Esperaba contacto por financiación. Sin seguimiento.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 02/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492262643056" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(222)">📋 Ver chat (9 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="222" data-name="Eduardo Uzcudun"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="eduardo uzcudun roca 36 financiacion">
-      <div class="card-header">
-        <div><div class="card-name">Eduardo Uzcudun</div><div class="card-phone">+5492262643056</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-222">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://www.instagram.com/p/DXhvU_pjO5d/</span><span class="msg-time">02/05 21:09</span></div><div class="msg-in"><span class="msg-content">Pásame datos de Avellaneda y roca ! En la semana escribime por este medio</span><span class="msg-time">02/05 21:10</span></div><div class="msg-in"><span class="msg-content">Gracias</span><span class="msg-time">02/05 21:10</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">02/05 21:11</span></div><div class="msg-out"><span class="msg-content">Dale, contame qué buscás en Avellaneda y Roca: cuántos ambientes, presupuesto en USD y si preferís casa o departamento.</span><span class="msg-time">02/05 21:11</span></div><div class="msg-out"><span class="msg-content">Perfecto, ya le paso el mensaje a Santiago.</span><span class="msg-time">02/05 21:14</span></div><div class="msg-out"><span class="msg-content">La financiación y los detalles de esas unidades los maneja él directamente.</span><span class="msg-time">02/05 21:14</span></div><div class="msg-out"><span class="msg-content">Cuando vuelvas a Tandil, escribime por acá y te paso opciones de 2 y 3 ambientes.</span><span class="msg-time">02/05 21:14</span></div><div class="msg-in"><span class="msg-content">Dale gracias abrazo</span><span class="msg-time">02/05 22:02</span></div></div>
+  </div>
+</div><div class="card roca" id="card-229" data-text="facundo samartino deptos al pozo roca 36, preguntó precios de entrada. recibió folleto, sin respuesta. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Facundo Samartino</div>
+        <div class="card-phone">+5492494559499</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Proyecto Avellaneda y Roca. Santiago iba a contactarlo por financiación. Sin seguimiento concreto.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 02/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(229)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Deptos al pozo Roca 36, preguntó precios de entrada. Recibió folleto, sin respuesta.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494559499" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(229)">📋 Ver chat (9 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="229" data-name="Facundo Samartino"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="facundo samartino roca 36 pozo precio entrada">
-      <div class="card-header">
-        <div><div class="card-name">Facundo Samartino</div><div class="card-phone">+5492494559499</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-229">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Buenas! Me pasarías más info?</span><span class="msg-time">03/05 14:41</span></div><div class="msg-in"><span class="msg-content">De los deptos al pozo en la calle roca</span><span class="msg-time">03/05 14:41</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠  <br>Para pasarte opciones de deptos al pozo en Roca, contame cuántos ambientes buscás y con qué presupuesto en USD manejás. Con eso te mando las que encajen.</span><span class="msg-time">03/05 14:43</span></div><div class="msg-in"><span class="msg-content">Buenas! Estoy viendo opciones, en cuanto arrancan?</span><span class="msg-time">03/05 15:05</span></div><div class="msg-out"><span class="msg-content">Eso lo maneja Santiago directamente, se lo paso y te contesta él.</span><span class="msg-time">03/05 15:07</span></div><div class="msg-out"><span class="msg-content">Si querés, también te puedo ir mostrando opciones similares en Roca.</span><span class="msg-time">03/05 15:07</span></div><div class="msg-in"><span class="msg-content">Dale!</span><span class="msg-time">03/05 15:07</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">03/05 21:46</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">03/05 21:46</span></div></div>
+  </div>
+</div><div class="card roca" id="card-226" data-text="franco arana (frankitox) primera vez, quiere entender condiciones. error de envío — nunca recibió info real. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Franco Arana (Frankitox)</div>
+        <div class="card-phone">+5492281596168</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Deptos al pozo Roca 36, preguntó precios de entrada. Recibió folleto, sin respuesta.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(226)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Primera vez, quiere entender condiciones. Error de envío — nunca recibió info real.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492281596168" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(226)">📋 Ver chat (12 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="226" data-name="Franco Arana (Frankitox)"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="franco arana frankitox roca 36 primera vez">
-      <div class="card-header">
-        <div><div class="card-name">Franco Arana (Frankitox)</div><div class="card-phone">+5492281596168</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-226">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿qué*buscás*priorizar?: Entender condiciones<br>¿qué*rango*de*inversión*tenés_previsto?: Prefiero hablarlo<br>full_name: Franco Arana<br>¿ya*invertiste*alguna*vez*en*pozo*o_fideicomiso?: Estoy evaluando por primera vez<br>phone_number: +542281596168<br>email: Franco.73.arana@gmail.com<br><br><br>**Fideicomiso Roca 36 · Inversión en Tandi...**<br>Roca 36 es una oportunidad para invertir en Tandil desde etapa de desarroll...<br>https://fb.me/4Dlf6IwBU</span><span class="msg-time">03/05 11:30</span></div><div class="msg-out"><span class="msg-content">Dale, le paso el mensaje a Santiago y se contacta con vos a la brevedad.</span><span class="msg-time">03/05 11:32</span></div><div class="msg-out"><span class="msg-content">🚨 The message could not be sent. Please check your connection. _[object Object]_</span><span class="msg-time">03/05 11:32</span></div><div class="msg-out"><span class="msg-content">Mientras tanto, si querés, te puedo ir contando el proyecto en líneas generales.</span><span class="msg-time">03/05 11:32</span></div><div class="msg-in"><span class="msg-content">Buen dia me parece bien muchas gracias</span><span class="msg-time">03/05 11:34</span></div><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿qué*te*interesa?: 2 dormitorios<br>¿qué*buscás*priorizar*en*tu_inversión?: Renta por alquiler<br>¿cuál*es*tu*rango*de_inversión?: Prefiero hablarlo<br>¿en*qué*plazo*pensás*avanzar?: Este mes<br>nombre*y*apellidos: FRANKITOX<br>correo_electrónico: franco.73.arana@gmail.com<br>número*de*teléfono: +542281596168<br><br><br>**San Lorenzo 420 · Inversión en Tandil**<br>Invertí en San Lorenzo 420, Tandil.<br>Unidades de 1 y 2 dormitorios para quie...<br>https://www.instagram.com/p/DX3Ct9ijC2U/</span><span class="msg-time">03/05 17:17</span></div><div class="msg-out"><span class="msg-content">Dale, eso lo maneja Santiago directamente, se lo paso y te contesta él.  <br>Si querés, dejame también el rango de inversión en USD para ir filtrando opciones de 2 dormitorios para renta.</span><span class="msg-time">03/05 17:19</span></div><div class="msg-in"><span class="msg-content">Yo quiero comprar</span><span class="msg-time">03/05 17:21</span></div><div class="msg-in"><span class="msg-content">O que me digan como es el modelo de renta</span><span class="msg-time">03/05 17:21</span></div><div class="msg-out"><span class="msg-content">Eso lo maneja Santiago directamente, se lo paso y te contesta él.</span><span class="msg-time">03/05 17:23</span></div><div class="msg-out"><span class="msg-content">Si querés, también le puedo dejar claro que estás buscando comprar para renta de 2 dormitorios este mes.</span><span class="msg-time">03/05 17:23</span></div><div class="msg-in"><span class="msg-content">Bueno muchas gracias</span><span class="msg-time">03/05 17:24</span></div></div>
+  </div>
+</div><div class="card roca" id="card-233" data-text="martín amaya roca 36, ticket mínimo, hasta usd 100.000, primera vez. sin seguimiento real. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Martín Amaya</div>
+        <div class="card-phone">+5492494589603</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, primera vez, quiere entender condiciones. Error de envío — nunca recibió info real.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(233)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Roca 36, ticket mínimo, hasta USD 100.000, primera vez. Sin seguimiento real.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494589603" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(233)">📋 Ver chat (7 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="233" data-name="Martín Amaya"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="martin amaya roca 36 primera vez 100000">
-      <div class="card-header">
-        <div><div class="card-name">Martín Amaya</div><div class="card-phone">+5492494589603</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-233">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿qué*buscás*priorizar?: Entrar con menor ticket<br>¿qué*rango*de*inversión*tenés_previsto?: Hasta USD 100.000<br>full_name: Martín Amaya<br>¿ya*invertiste*alguna*vez*en*pozo*o_fideicomiso?: No<br>phone_number: +542494589603<br>email: amayamartinbomb76@gmail.com<br><br><br>**Fideicomiso Roca 36 · Inversión en Tandi...**<br>Roca 36 es una oportunidad para invertir en Tandil desde etapa de desarroll...<br>https://fb.me/4Dlf6IwBU</span><span class="msg-time">03/05 19:24</span></div><div class="msg-out"><span class="msg-content">Dale, ya vi tu perfil de inversión.</span><span class="msg-time">03/05 19:26</span></div><div class="msg-out"><span class="msg-content">Tengo alternativas en Tandil dentro de USD 100.000 y también le paso a Santiago la consulta por Fideicomiso Roca 36 para que te amplíe condiciones.</span><span class="msg-time">03/05 19:26</span></div><div class="msg-out"><span class="msg-content">Le paso el mensaje y te contesta él.</span><span class="msg-time">03/05 19:26</span></div><div class="msg-out"><span class="msg-content">Hola Martín, ¿cómo estás? Santiago te habla. ¿Querés contarme un poco más sobre qué estás buscando? Entiendo que estás buscando hasta $100,000, pero es para inversión?</span><span class="msg-time">03/05 21:40</span></div><div class="msg-out"><span class="msg-content">¿Podés revisar nuestra página web mientras tanto? Y si querés, cuando puedas, hacemos un llamado. Hay más propiedades que no tenemos publicadas en la web.</span><span class="msg-time">03/05 21:41</span></div><div class="msg-out"><span class="msg-content">propiedades.santiagofunes.com.ar</span><span class="msg-time">03/05 21:41</span></div></div>
+  </div>
+</div><div class="card roca" id="card-235" data-text="mario balbi ya invirtió en pozo antes, prioridad renta futura. santiago solo dijo 'hola'. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Mario Balbi</div>
+        <div class="card-phone">+5492494214483</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, ticket menor posible, hasta USD 100.000, primera vez. Sin seguimiento real.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(235)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Ya invirtió en pozo antes, prioridad renta futura. Santiago solo dijo 'Hola'.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494214483" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(235)">📋 Ver chat (6 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="235" data-name="Mario Balbi"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="mario balbi roca 36 inversion renta pozo">
-      <div class="card-header">
-        <div><div class="card-name">Mario Balbi</div><div class="card-phone">+5492494214483</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-235">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿qué*buscás*priorizar?: Renta futura al finalizar<br>¿qué*rango*de*inversión*tenés_previsto?: Prefiero hablarlo<br>full_name: Mario Esteban Balbi<br>¿ya*invertiste*alguna*vez*en*pozo*o_fideicomiso?: Si<br>phone_number: +542494214483<br>email: marioebalbi@hotmail.com<br><br><br>**Fideicomiso Roca 36 · Inversión en Tandi...**<br>Roca 36 es una oportunidad para invertir en Tandil desde etapa de desarroll...<br>https://fb.me/4Dlf6IwBU</span><span class="msg-time">03/05 20:24</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠  <br>Te paso esta info a Santiago y te contesta él.</span><span class="msg-time">03/05 20:26</span></div><div class="msg-out"><span class="msg-content">Mientras tanto, si querés, contame qué rango de inversión tenés en mente en USD.</span><span class="msg-time">03/05 20:26</span></div><div class="msg-out"><span class="msg-content">Hola, ¿cómo estás? Santiago te habla. Ya te paso el folleto de Avellaneda y Roca.</span><span class="msg-time">03/05 21:38</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">03/05 21:38</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">03/05 21:38</span></div></div>
+  </div>
+</div><div class="card roca" id="card-219" data-text="carlos alberto proyecto al pozo. recibió folleto roca 36. conversación cortada sin cierre. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Carlos Alberto</div>
+        <div class="card-phone">+5491158129046</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, ya invirtió en pozo antes, prioridad renta futura. Santiago solo dijo "Hola" y no más.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(219)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Proyecto al pozo. Recibió folleto Roca 36. Conversación cortada sin cierre.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5491158129046" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(219)">📋 Ver chat (9 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="219" data-name="Carlos Alberto"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="carlos alberto pozo fideicomiso folleto">
-      <div class="card-header">
-        <div><div class="card-name">Carlos Alberto</div><div class="card-phone">+5491158129046</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-219">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://fb.me/4jSbU4i5G</span><span class="msg-time">02/05 13:25</span></div><div class="msg-in"><span class="msg-content">Si pero cuándo se entrega?</span><span class="msg-time">02/05 13:26</span></div><div class="msg-in"><span class="msg-content">No puedo ver el link</span><span class="msg-time">02/05 13:26</span></div><div class="msg-out"><span class="msg-content">Eso lo maneja Santiago directamente, se lo paso y te contesta él.</span><span class="msg-time">02/05 13:27</span></div><div class="msg-out"><span class="msg-content">Si el link no te abre, mandame captura de la publicación o decime cuál es y te ubico la propiedad. Mientras, contame zona, ambientes y presupuesto en USD para ir filtrando opciones.</span><span class="msg-time">02/05 13:27</span></div><div class="msg-out"><span class="msg-content">Hola buen dia, Santiago te habla</span><span class="msg-time">02/05 13:36</span></div><div class="msg-out"><span class="msg-content">ya te comparto la informacion</span><span class="msg-time">02/05 13:36</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">02/05 13:36</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">02/05 13:36</span></div></div>
+  </div>
+</div><div class="card roca" id="card-200" data-text="fernando musons tozzetto roca 36, recibió folleto. nunca respondió. sin seguimiento. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Fernando Musons Tozzetto</div>
+        <div class="card-phone">+5492494497576</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Proyecto al pozo, recibió folleto Roca 36. Hubo respuesta pero conversación cortada sin cierre.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(200)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Roca 36, recibió folleto. Nunca respondió. Sin seguimiento.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494497576" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(200)">📋 Ver chat (8 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="200" data-name="Fernando Musons Tozzetto"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="fernando musons roca 36 fideicomiso">
-      <div class="card-header">
-        <div><div class="card-name">Fernando Musons Tozzetto</div><div class="card-phone">+5492494497576</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-200">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en el proyecto de la calle Roca y Avellaneda.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://fb.me/8FrVlMLf8</span><span class="msg-time">29/04 15:01</span></div><div class="msg-in"><span class="msg-content">Podrías pasarme más información por favor</span><span class="msg-time">29/04 15:02</span></div><div class="msg-in"><span class="msg-content">Gracias</span><span class="msg-time">29/04 15:02</span></div><div class="msg-out"><span class="msg-content">Hola Fernando como estas?</span><span class="msg-time">29/04 15:02</span></div><div class="msg-out"><span class="msg-content">ye te paso</span><span class="msg-time">29/04 15:02</span></div><div class="msg-in"><span class="msg-content">👍</span><span class="msg-time">29/04 15:02</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">29/04 15:03</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">29/04 15:03</span></div></div>
+  </div>
+</div><div class="card roca" id="card-120" data-text="maximiliano barros para hija de un amigo. le pasó el folleto. comprador potencial indirecto. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Maximiliano Barros</div>
+        <div class="card-phone">+5492494564381</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, recibió folleto. Nunca respondió. Sin seguimiento posterior.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(120)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Para hija de un amigo. Le pasó el folleto. Comprador potencial indirecto.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5492494564381" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(120)">📋 Ver chat (8 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="120" data-name="Maximiliano Barros"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="maximiliano barros roca 36 amigo hija">
-      <div class="card-header">
-        <div><div class="card-name">Maximiliano Barros</div><div class="card-phone">+5492494564381</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
+  </div>
+  <div class="chat-box" id="chat-120">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://fb.me/8FrVlMLf8</span><span class="msg-time">28/04 00:07</span></div><div class="msg-in"><span class="msg-content">Me interesa el pozo de roca</span><span class="msg-time">28/04 00:07</span></div><div class="msg-out"><span class="msg-content">Hola buen dia, ya le comparto toda la informacion</span><span class="msg-time">28/04 12:13</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">28/04 12:15</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">28/04 12:15</span></div><div class="msg-in"><span class="msg-content">Gracias</span><span class="msg-time">28/04 14:41</span></div><div class="msg-out"><span class="msg-content">Hola, ¿quiere decirme qué le pareció la información que le compartí?</span><span class="msg-time">29/04 14:14</span></div><div class="msg-in"><span class="msg-content">Se lo pase a un amigo para la hija, lo estudia</span><span class="msg-time">29/04 14:15</span></div></div>
+  </div>
+</div><div class="card roca" id="card-217" data-text="rama pozo roca 36, 30% anticipo + cuotas. tiene propiedad en bsas en venta (posible canje). roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Rama</div>
+        <div class="card-phone">+5491168945858</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Roca 36 para hija de un amigo. Le pasó el folleto. Hay comprador potencial indirecto, sin seguimiento.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(217)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Pozo Roca 36, 30% anticipo + cuotas. Tiene propiedad en BsAs en venta (posible canje).</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 01/05</div>
+    <div class="card-actions">
       <a class="btn btn-wa" href="https://wa.me/5491168945858" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(217)">📋 Ver chat (17 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="217" data-name="Rama"> Seleccionar</label>
     </div>
-
-    <div class="card roca" data-text="rama roca 36 pozo anticipo cuotas propiedad buenos aires">
-      <div class="card-header">
-        <div><div class="card-name">Rama</div><div class="card-phone">+5491168945858</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto al pozo Roca 36, 30% anticipo + cuotas. Tiene propiedad en BsAs en venta (posible canje/financiación).</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 01/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5491121795145" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card roca" data-text="agustin que otra cosa tenes opciones">
-      <div class="card-header">
-        <div><div class="card-name">Agustin</div><div class="card-phone">+5491121795145</div></div>
-        <span class="tag tag-roca">ROCA 36</span>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Recibió Roca 36 y preguntó "¿qué otra cosa tenés?". Sin respuesta. Quiere ver más opciones.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5491121795145" target="_blank">💬 WhatsApp</a>
-    </div>
-
   </div>
+  <div class="chat-box" id="chat-217">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">al momento no cuento con ahorros pero en unos meses calculo que si</span><span class="msg-time">01/05 17:42</span></div><div class="msg-in"><span class="msg-content">el aviso decía el 30 % y el resto en cuotas }</span><span class="msg-time">01/05 17:42</span></div><div class="msg-out"><span class="msg-content">Eso lo maneja Santiago directamente, se lo paso y te contesta él.  <br>Mientras tanto, si querés te sigo pasando opciones en Avellaneda y Roca.</span><span class="msg-time">01/05 17:43</span></div><div class="msg-out"><span class="msg-content">Hola, cómo estás?</span><span class="msg-time">01/05 17:44</span></div><div class="msg-out"><span class="msg-content">Santiago Funes te habla</span><span class="msg-time">01/05 17:44</span></div><div class="msg-out"><span class="msg-content">Así es, se ingresa con el 30% y el resto está financiado en cuotas! Como vos decís</span><span class="msg-time">01/05 17:44</span></div><div class="msg-in"><span class="msg-content">hola santiago</span><span class="msg-time">01/05 18:23</span></div><div class="msg-in"><span class="msg-content">cuanto es el 30 %</span><span class="msg-time">01/05 18:23</span></div><div class="msg-out"><span class="msg-content">Aproximadamente 30mil dólares</span><span class="msg-time">01/05 18:23</span></div><div class="msg-in"><span class="msg-content">buenisimo</span><span class="msg-time">01/05 18:24</span></div><div class="msg-in"><span class="msg-content">yo tengo una propiedad en bs as en venta</span><span class="msg-time">01/05 18:24</span></div><div class="msg-in"><span class="msg-content">cualquier cosa te aviso</span><span class="msg-time">01/05 18:24</span></div><div class="msg-out"><span class="msg-content">Ya te comparto el folleto</span><span class="msg-time">01/05 18:25</span></div><div class="msg-in"><span class="msg-content">gracias</span><span class="msg-time">01/05 18:25</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">01/05 18:25</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">01/05 18:25</span></div><div class="msg-out"><span class="msg-content">No hay de que! <br>Estamos en contacto!</span><span class="msg-time">01/05 18:25</span></div></div>
+  </div>
+</div><div class="card roca" id="card-181" data-text="agustin recibió roca 36 y preguntó '¿qué otra cosa tenés?'. sin respuesta. roca 36">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Agustin</div>
+        <div class="card-phone">+5491121795145</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-roca">ROCA 36</span>
+        <button class="btn-delete" onclick="eliminar(181)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Recibió Roca 36 y preguntó '¿qué otra cosa tenés?'. Sin respuesta.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5491121795145" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(181)">📋 Ver chat (4 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="181" data-name="Agustin"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-181">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola, buen día. ¿Cómo estás?<br><br>Te pido mil disculpas, que quedó tu mensaje atrás. Estábamos con cambio de oficina, cambio de gestión y de sistemas, entonces varios mensajes nos quedaron abajo.<br><br>Ahora sí, dígame en qué más o menos rango presupuestario quiere que le pasemos opciones: por qué zona, qué tipo de departamento. Y empezamos a buscar la mejor opción.</span><span class="msg-time">29/04 14:20</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">29/04 15:34</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">29/04 15:34</span></div><div class="msg-in"><span class="msg-content">Que otra cosa tenes?</span><span class="msg-time">29/04 15:57</span></div></div>
+  </div>
+</div></div>
 
-  <!-- COMPRADORES -->
   <p class="section-title">Compradores — sin opciones enviadas</p>
-  <div class="grid" id="grid-compradores">
-
-    <div class="card comprador" data-text="bautista dimarco 2 dormitorios 100000 200000 inversion">
-      <div class="card-header">
-        <div><div class="card-name">Bautista Dimarco</div><div class="card-phone">+5492494609488</div></div>
-        <span class="tag tag-credito">RECIBIÓ OPCIONES</span>
+  <div class="grid"><div class="card comprador" id="card-214" data-text="bautista dimarco 2 dorm, usd 100-200k, inversión. recibió 3 opciones, no respondió. sin seguimiento. 2 dorm">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Bautista Dimarco</div>
+        <div class="card-phone">+5492494609488</div>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm, USD 100.000–200.000, buena inversión. Recibió 3 opciones, nunca respondió. Sin seguimiento.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492346510845" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="silvi pasqualotto 2 habitaciones centro 200000">
-      <div class="card-header">
-        <div><div class="card-name">Silvi Pasqualotto</div><div class="card-phone">+5492346510845</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">2 DORM</span>
+        <button class="btn-delete" onclick="eliminar(214)" title="Eliminar">✕</button>
       </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 2 habitaciones, zona centro o semicéntrico, hasta USD 200.000. Recibió link pero conversación cortada.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492983646223" target="_blank">💬 WhatsApp</a>
     </div>
-
-    <div class="card comprador" data-text="jorge daddario 1 dormitorio 70000 90000">
-      <div class="card-header">
-        <div><div class="card-name">Jorge Daddario</div><div class="card-phone">+5492983646223</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm, USD 70.000–90.000. Recibió una opción equivocada (no era 1 dorm). Faltan opciones reales.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 02/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494309320" target="_blank">💬 WhatsApp</a>
+    <div class="card-busca"><strong>Busca:</strong> 2 dorm, USD 100-200k, inversión. Recibió 3 opciones, no respondió. Sin seguimiento.</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494609488" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(214)">📋 Ver chat (12 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="214" data-name="Bautista Dimarco"> Seleccionar</label>
     </div>
-
-    <div class="card comprador" data-text="nico quintana garibaldi 431 2 dormitorios revalorizacion">
-      <div class="card-header">
-        <div><div class="card-name">Nico (Personal trainer)</div><div class="card-phone">+5492494309320</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Garibaldi 431, 2 dorm, prioridad revalorización. Completó formulario, bot pidió presupuesto, sin respuesta.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492266481510" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="eugenia juarez san lorenzo 420 2 dormitorios 150000 200000">
-      <div class="card-header">
-        <div><div class="card-name">Eugenia Juarez</div><div class="card-phone">+5492266481510</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> San Lorenzo 420, 2 dorm, USD 150.000–200.000. Recibió opciones pero no confirmó visita.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492932543538" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="andrés flores 2 dormitorios ascensor cochera">
-      <div class="card-header">
-        <div><div class="card-name">Andrés Flores</div><div class="card-phone">+5492932543538</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm con ascensor y cochera. Visita en Tandil próxima. Nunca recibió opciones concretas.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5491162866801" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="santiago rocco 2 ambientes centro 200000">
-      <div class="card-header">
-        <div><div class="card-name">Santiago Rocco</div><div class="card-phone">+5491162866801</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 2 ambientes zona centro, hasta USD 200.000. Recibió 3 opciones, no respondió cuál le interesó.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494575679" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="albertito 2 ambientes cocina separada roca 80000 100000">
-      <div class="card-header">
-        <div><div class="card-name">Albertito</div><div class="card-phone">+5492494575679</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 2 amb con cocina separada en Roca, USD 80.000–100.000. Recibió una opción, sin seguimiento.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494011290" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="uberlinda garibaldi cochera 1 dormitorio">
-      <div class="card-header">
-        <div><div class="card-name">Uberlinda</div><div class="card-phone">+5492494011290</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm en Garibaldi con cochera. Le enviamos Garibaldi 431 pero no tiene cochera. Sin alternativas.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494520998" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="juan m pedro opciones contado financiacion">
-      <div class="card-header">
-        <div><div class="card-name">Juan M. Pedro</div><div class="card-phone">+5492494520998</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Quiere ver opciones, contado o financiación. Lead interesado pero sin calificar. Vale contacto directo.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494564707" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="soraya evaluando opciones">
-      <div class="card-header">
-        <div><div class="card-name">Soraya</div><div class="card-phone">+5492494564707</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Recibió opciones, dijo "estoy evaluando". Sin seguimiento posterior. Vale un ping.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492945443030" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="mery julio visita tandil">
-      <div class="card-header">
-        <div><div class="card-name">Mery</div><div class="card-phone">+5492945443030</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Estarán en Tandil en julio. Confirmó que siguen buscando. Coordinar visitas para ese momento.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492281413507" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="maria olinda paz 80 visita">
-      <div class="card-header">
-        <div><div class="card-name">Maria Olinda Glorioso</div><div class="card-phone">+5492281413507</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Quería visitar Paz 80. Respuesta confusa del agente (dirección distinta). Necesita aclaración y re-agendar.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 02/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494664828" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="josefina pascua consultar sin detalle">
-      <div class="card-header">
-        <div><div class="card-name">Josefina Pascua</div><div class="card-phone">+5492494664828</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Escribió "quiero consultar" desde un anuncio. Nunca especificó qué. Sin seguimiento.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492281303092" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="julio cesar lopez cochera centro 9 de julio montevideo pellegrini">
-      <div class="card-header">
-        <div><div class="card-name">Julio César López</div><div class="card-phone">+5492281303092</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Cochera en radio 5 cuadras de 9 de Julio entre Montevideo y Pellegrini (centro Tandil). Muy específico.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492494279832" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="mirta anuncio sin respuesta">
-      <div class="card-header">
-        <div><div class="card-name">Mirta</div><div class="card-phone">+5492494279832</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Vino de anuncio, nunca especificó. Santiago intentó recontacto sin respuesta. Vale un intento más.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492262496453" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="myrian 3 opciones sin respuesta">
-      <div class="card-header">
-        <div><div class="card-name">Myrian</div><div class="card-phone">+5492262496453</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Recibió 3 opciones entre USD 60k–80k. Respondió solo "E" (mensaje cortado). Sin confirmación de interés.</div>
-      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492364643984" target="_blank">💬 WhatsApp</a>
-    </div>
-
-    <div class="card comprador" data-text="sergio geremia hasta 90000 otros temas avisar">
-      <div class="card-header">
-        <div><div class="card-name">Sergio Geremia</div><div class="card-phone">+5492364643984</div></div>
-      </div>
-      <div class="card-busca"><strong>Busca:</strong> Hasta USD 90.000. Dijo "ando en otros temas, si aparece algo avisame". Contactar si hay novedad en ese rango.</div>
-      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
-      <a class="btn btn-wa" href="https://wa.me/5492364643984" target="_blank">💬 WhatsApp</a>
-    </div>
-
   </div>
-
+  <div class="chat-box" id="chat-214">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola</span><span class="msg-time">30/04 23:20</span></div><div class="msg-in"><span class="msg-content">Quiero comprar un departamento dos habitaciones en tandil entre 100 y 200 mil dolares, quiero que sea buena inversión</span><span class="msg-time">30/04 23:20</span></div><div class="msg-out"><span class="msg-content">Dale, ya te paso opciones.<br><br>Tengo estas 3:</span><span class="msg-time">30/04 23:22</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - San Lorenzo 420<br>📐 3 amb · 77 m²<br>💰 USD 175.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7v82d009boe01nm8gooex</span><span class="msg-time">30/04 23:22</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - Uriburu 1026<br>📐 3 amb · 86 m²<br>💰 USD 164.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7p40e008xoe019t9ni1zj</span><span class="msg-time">30/04 23:22</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - Sarmiento 1200<br>📐 3 amb · 82 m²<br>💰 USD 95.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7az8y007xoe01zfjylon2</span><span class="msg-time">30/04 23:22</span></div><div class="msg-out"><span class="msg-content">Revísalos tranquilo, si tenés dudas me avisás y si querés hacer visita a alguno de ellos la arreglamos ✅</span><span class="msg-time">30/04 23:22</span></div><div class="msg-in"><span class="msg-content">Ningún me convence</span><span class="msg-time">30/04 23:23</span></div><div class="msg-out"><span class="msg-content">Perfecto, te afino la búsqueda.</span><span class="msg-time">30/04 23:25</span></div><div class="msg-out"><span class="msg-content">Si querés, te paso solo deptos de 2 dormitorios y mejor rentabilidad, o si preferís te filtro por zona más central, a estrenar o con cochera.</span><span class="msg-time">30/04 23:25</span></div><div class="msg-in"><span class="msg-content">Dale</span><span class="msg-time">30/04 23:25</span></div><div class="msg-out"><span class="msg-content">Perfecto. Decime qué priorizás: zona más céntrica, a estrenar, con cochera o mejor rentabilidad, y te filtro mejor.</span><span class="msg-time">30/04 23:27</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-210" data-text="silvi pasqualotto 2 hab, centro/semicéntrico, hasta usd 200.000. recibió link, conversación cortada. 2 dorm">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Silvi Pasqualotto</div>
+        <div class="card-phone">+5492346510845</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">2 DORM</span>
+        <button class="btn-delete" onclick="eliminar(210)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> 2 hab, centro/semicéntrico, hasta USD 200.000. Recibió link, conversación cortada.</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492346510845" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(210)">📋 Ver chat (12 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="210" data-name="Silvi Pasqualotto"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-210">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">30/04 19:36</span></div><div class="msg-out"><span class="msg-content">Tengo que saber qué zona te interesa, cuántos ambientes buscás y con qué presupuesto manejás en USD.</span><span class="msg-time">30/04 19:36</span></div><div class="msg-out"><span class="msg-content">🚨 The message could not be sent. Please check your connection. _[object Object]_</span><span class="msg-time">30/04 19:36</span></div><div class="msg-out"><span class="msg-content">Si querés, también te paso opciones al pozo que tengamos disponibles ahora.</span><span class="msg-time">30/04 19:36</span></div><div class="msg-in"><span class="msg-content">Hola, la idea es de dos habitaciones, y q sea centro o semicentrico, pero bueno veo las opciones disponibles</span><span class="msg-time">30/04 19:37</span></div><div class="msg-in"><span class="msg-content">Hasta 200.000 UDS</span><span class="msg-time">30/04 19:37</span></div><div class="msg-in"><span class="msg-content">Dale genial!!!</span><span class="msg-time">30/04 19:37</span></div><div class="msg-out"><span class="msg-content">https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7e33z0085oe0112ckkw9b</span><span class="msg-time">30/04 19:43</span></div><div class="msg-out"><span class="msg-content">Este es el proyecto en pozo!</span><span class="msg-time">30/04 19:43</span></div><div class="msg-out"><span class="msg-content">https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7e33z0085oe0112ckkw9b</span><span class="msg-time">30/04 19:45</span></div><div class="msg-out"><span class="msg-content">No te están llegando los links</span><span class="msg-time">30/04 19:47</span></div><div class="msg-out"><span class="msg-content">https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7e33z0085oe0112ckkw9b</span><span class="msg-time">30/04 21:16</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-221" data-text="jorge daddario 1 dorm, usd 70-90k. recibió opción equivocada. faltan opciones reales en su rango. 1 dorm">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Jorge Daddario</div>
+        <div class="card-phone">+5492983646223</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">1 DORM</span>
+        <button class="btn-delete" onclick="eliminar(221)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> 1 dorm, USD 70-90k. Recibió opción equivocada. Faltan opciones reales en su rango.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 02/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492983646223" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(221)">📋 Ver chat (11 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="221" data-name="Jorge Daddario"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-221">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil de un dormitorio<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://fb.me/8FrVlMLf8</span><span class="msg-time">02/05 20:14</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">02/05 20:16</span></div><div class="msg-out"><span class="msg-content">Contame qué zona te interesa y con qué presupuesto manejás en USD para un 1 dormitorio.</span><span class="msg-time">02/05 20:16</span></div><div class="msg-in"><span class="msg-content">Dexime si tenes entre 70/90 mil dolores y formas de pago</span><span class="msg-time">02/05 20:17</span></div><div class="msg-out"><span class="msg-content">Dale, tengo opciones en ese rango. Te paso algunas:</span><span class="msg-time">02/05 20:18</span></div><div class="msg-out"><span class="msg-content">🏠 DEPARTAMENTO en Liniers y Cuba  <br>📐 3 amb ·  <br>💰 USD 60.000  <br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmokeefhh0005oi01iuw1jt0z</span><span class="msg-time">02/05 20:19</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento en Guatemala 1098  <br>📐 2 amb · 40 m²  <br>💰 USD 80.000  <br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7a3nl007voe01xk6v5itn</span><span class="msg-time">02/05 20:19</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento en paz 80  <br>📐 3 amb · 50 m²  <br>💰 USD 71.000  <br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog79ph9007toe01n1qowtg6</span><span class="msg-time">02/05 20:19</span></div><div class="msg-out"><span class="msg-content">La forma de pago la maneja Santiago directamente, se lo paso y te contesta él.</span><span class="msg-time">02/05 20:19</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">03/05 21:50</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">03/05 21:50</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-225" data-text="nico (personal trainer) garibaldi 431, 2 dorm, prioridad revalorización. completó formulario, sin respuesta. garibaldi">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Nico (Personal trainer)</div>
+        <div class="card-phone">+5492494309320</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">GARIBALDI</span>
+        <button class="btn-delete" onclick="eliminar(225)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Garibaldi 431, 2 dorm, prioridad revalorización. Completó formulario, sin respuesta.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494309320" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(225)">📋 Ver chat (2 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="225" data-name="Nico (Personal trainer)"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-225">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>¿qué*buscás*priorizar*en*tu_inversión?: Revalorización futura<br>¿qué*te*interesa?: 2 dormitorios<br>¿cuál*es*tu*rango*de_inversión?: Prefiero hablarlo<br>¿en*qué*plazo*pensás*avanzar?: Estoy evaluando<br>full_name: Nico Quintana<br>email: celiquintana1@gmail.com<br>phone_number: +542494309220<br><br><br>**Garibaldi 431 · Opciones para invertir**<br>Invertí en Garibaldi 431, Tandil.<br>Hay opciones de 1 y 2 dormitorios para di...<br>https://www.instagram.com/p/DX3CzdTjOhI/</span><span class="msg-time">03/05 08:30</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠  <br>Dale, en Garibaldi 431 hay opciones de 1 y 2 dormitorios. Pasame el presupuesto aproximado en USD y te paso las que mejor encajan.</span><span class="msg-time">03/05 08:32</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-234" data-text="eugenia juarez san lorenzo 420, 2 dorm, usd 150-200k. recibió opciones, no confirmó visita. 2 dorm">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Eugenia Juarez</div>
+        <div class="card-phone">+5492266481510</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">2 DORM</span>
+        <button class="btn-delete" onclick="eliminar(234)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> San Lorenzo 420, 2 dorm, USD 150-200k. Recibió opciones, no confirmó visita.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492266481510" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(234)">📋 Ver chat (9 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="234" data-name="Eugenia Juarez"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-234">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Completé el formulario y me gustaría obtener más información sobre tu negocio.<br><br>nombre*y*apellidos: Eugenia Juarez<br>correo_electrónico: eugeniamjuarez@yahoo.com.ar<br>número*de*teléfono: +542266481510<br>¿qué*buscás*priorizar*en*tu_inversión?: Quiero comparar opciones<br>¿qué*te*interesa?: 2 dormitorios<br>¿cuál*es*tu*rango*de_inversión?: USD 150.000 a 200.000<br>¿en*qué*plazo*pensás*avanzar?: Estoy evaluando</span><span class="msg-time">03/05 20:10</span></div><div class="msg-in"><span class="msg-content">Me interesa info de san Lorenzo al 400</span><span class="msg-time">03/05 20:10</span></div><div class="msg-out"><span class="msg-content">Dale, te paso 3 opciones en San Lorenzo al 400, todas de 2 dormitorios y dentro de tu rango:</span><span class="msg-time">03/05 20:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - San Lorenzo 420 (4to piso)<br>📐 3 amb · 77 m²<br>💰 USD 175.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7v82d009boe01nm8gooex</span><span class="msg-time">03/05 20:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - San Lorenzo 420 (3er piso)<br>📐 3 amb · 77 m²<br>💰 USD 175.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7u2q90099oe01j9m2jmpf</span><span class="msg-time">03/05 20:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - San Lorenzo 420 (2do piso)<br>📐 3 amb · 77 m²<br>💰 USD 175.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7sqlz0097oe019rrrn75m</span><span class="msg-time">03/05 20:12</span></div><div class="msg-out"><span class="msg-content">Revísalos tranquilo, si tenés dudas me avisás y si querés hacer visita a alguno de ellos la arreglamos ✅</span><span class="msg-time">03/05 20:12</span></div><div class="msg-in"><span class="msg-content">Perdón pero pensé que era en Mar del Plata</span><span class="msg-time">03/05 20:16</span></div><div class="msg-out"><span class="msg-content">Entiendo. Nosotros trabajamos solo en Tandil y zona.<br><br>Si en algún momento querés mirar opciones por acá, te paso las que tenemos 🏠</span><span class="msg-time">03/05 20:17</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-115" data-text="andrés flores 2 dorm con ascensor y cochera. visita en tandil próxima. sin opciones enviadas. 2 dorm">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Andrés Flores</div>
+        <div class="card-phone">+5492932543538</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">2 DORM</span>
+        <button class="btn-delete" onclick="eliminar(115)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> 2 dorm con ascensor y cochera. Visita en Tandil próxima. Sin opciones enviadas.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492932543538" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(115)">📋 Ver chat (8 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="115" data-name="Andrés Flores"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-115">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil.<br><br>Casas y departamentos desde...<br>https://www.instagram.com/p/DXhvhl4DCG-/</span><span class="msg-time">26/04 17:09</span></div><div class="msg-in"><span class="msg-content">Dpto 2 dorm. Ascensor y cochera</span><span class="msg-time">26/04 17:10</span></div><div class="msg-out"><span class="msg-content">hola como estas?</span><span class="msg-time">27/04 12:50</span></div><div class="msg-out"><span class="msg-content">contame andres, que presupuesto tenes aprox?</span><span class="msg-time">27/04 12:50</span></div><div class="msg-in"><span class="msg-content">Hola</span><span class="msg-time">27/04 12:58</span></div><div class="msg-in"><span class="msg-content">100k</span><span class="msg-time">27/04 12:58</span></div><div class="msg-in"><span class="msg-content">si tenes algo disponible, me pasas info y vamos viendo</span><span class="msg-time">27/04 13:00</span></div><div class="msg-in"><span class="msg-content">y te aviso cuando este en Tandil</span><span class="msg-time">27/04 13:01</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-83" data-text="santiago rocco 2 ambientes zona centro, hasta usd 200k. recibió 3 opciones, no respondió cuál. 2 amb">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Santiago Rocco</div>
+        <div class="card-phone">+5491162866801</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">2 AMB</span>
+        <button class="btn-delete" onclick="eliminar(83)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> 2 ambientes zona centro, hasta USD 200k. Recibió 3 opciones, no respondió cuál.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5491162866801" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(83)">📋 Ver chat (19 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="83" data-name="Santiago Rocco"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-83">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">[Borrar chat]</span><span class="msg-time">27/04 18:08</span></div><div class="msg-in"><span class="msg-content">Quiero comprar. Por centro, 2 ambientes, debajo de 200000</span><span class="msg-time">27/04 18:09</span></div><div class="msg-out"><span class="msg-content">Dale, te paso opciones en centro que entran en tu presupuesto 🏠</span><span class="msg-time">27/04 18:09</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - Chacabuco 572<br>📐 2 amb · 56 m²<br>💰 USD 145.600<br>🔗 https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7nqhr008roe0119ix2oov</span><span class="msg-time">27/04 18:09</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - San Lorenzo 420<br>📐 2 amb · 54 m²<br>💰 USD 115.000<br>🔗 https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7ixif008loe01qwhsej8p</span><span class="msg-time">27/04 18:09</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - Constitucion 862<br>📐 2 amb · 64 m²<br>💰 USD 90.000<br>🔗 https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7cxvs0083oe014w6e1h1r</span><span class="msg-time">27/04 18:09</span></div><div class="msg-out"><span class="msg-content">Cuál te gustó más para coordinar la visita.</span><span class="msg-time">27/04 18:09</span></div><div class="msg-in"><span class="msg-content">Borrar chat</span><span class="msg-time">27/04 18:11</span></div><div class="msg-in"><span class="msg-content">Quiero comprar. Por centro, 2 ambientes, debajo de 200000</span><span class="msg-time">27/04 18:11</span></div><div class="msg-out"><span class="msg-content">Dale, ya te paso opciones 🏠</span><span class="msg-time">27/04 18:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - Paz 341<br>📐 3 amb · 96 m²<br>💰 USD 190.000<br>🔗 https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7wknh009doe01zxo1dzln</span><span class="msg-time">27/04 18:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - San Lorenzo 420<br>📐 2 amb · 54 m²<br>💰 USD 115.000<br>🔗 https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7ixif008loe01qwhsej8p</span><span class="msg-time">27/04 18:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - Chacabuco 977<br>📐 2 amb · 48 m²<br>💰 USD 105.000<br>🔗 https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7enij0087oe01kj08pg3y</span><span class="msg-time">27/04 18:12</span></div><div class="msg-out"><span class="msg-content">Revísalos tranquilo, si tenés dudas me avisás y si querés hacer visita a alguno de ellos la arreglamos.</span><span class="msg-time">27/04 18:12</span></div><div class="msg-in"><span class="msg-content">Borrar chat mio y de marcos</span><span class="msg-time">27/04 18:22</span></div><div class="msg-in"><span class="msg-content">Hola. Que propiedades me mandaste antes?</span><span class="msg-time">27/04 18:23</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">27/04 18:24</span></div><div class="msg-out"><span class="msg-content">No me figura el historial de lo que se te mandó antes. Si querés, decime zona, ambientes y presupuesto en USD y te paso opciones de nuevo.</span><span class="msg-time">27/04 18:24</span></div><div class="msg-out"><span class="msg-content">**https://propiedades.santiagofunes.agenticsia.online/propiedades/cmog7e33z0085oe0112ckkw9b**</span><span class="msg-time">30/04 23:27</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-211" data-text="albertito 2 amb con cocina separada en roca, usd 80-100k. una opción enviada, sin seguimiento. 2 amb">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Albertito</div>
+        <div class="card-phone">+5492494575679</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">2 AMB</span>
+        <button class="btn-delete" onclick="eliminar(211)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> 2 amb con cocina separada en Roca, USD 80-100k. Una opción enviada, sin seguimiento.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494575679" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(211)">📋 Ver chat (15 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="211" data-name="Albertito"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-211">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠</span><span class="msg-time">30/04 21:34</span></div><div class="msg-out"><span class="msg-content">🚨 The message could not be sent. Please check your connection. _[object Object]_</span><span class="msg-time">30/04 21:34</span></div><div class="msg-out"><span class="msg-content">Contame cuántos ambientes buscás y con qué presupuesto manejás en USD, así te paso opciones de dptos en Roca.</span><span class="msg-time">30/04 21:34</span></div><div class="msg-in"><span class="msg-content">Dptos de 2 ambientes, cocina separada</span><span class="msg-time">30/04 21:35</span></div><div class="msg-out"><span class="msg-content">Dale, con 2 ambientes y cocina separada ya lo tengo 📍</span><span class="msg-time">30/04 21:37</span></div><div class="msg-out"><span class="msg-content">Me pasás el presupuesto máximo en USD y te paso opciones de dptos en Roca.</span><span class="msg-time">30/04 21:37</span></div><div class="msg-in"><span class="msg-content">80/100 usd</span><span class="msg-time">30/04 21:38</span></div><div class="msg-out"><span class="msg-content">Dale, te paso los que más se acercan a lo que buscás:</span><span class="msg-time">30/04 21:40</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento en Constitucion 862<br>📐 2 amb · 64 m²<br>💰 USD 100.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7cxvs0083oe014w6e1h1r</span><span class="msg-time">30/04 21:40</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento en Alberdi 348<br>📐 2 amb · 60 m²<br>💰 USD 100.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7cdmp0081oe01nlj9a6p1</span><span class="msg-time">30/04 21:40</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento en Guatemala 1098<br>📐 2 amb · 40 m²<br>💰 USD 80.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7a3nl007voe01xk6v5itn</span><span class="msg-time">30/04 21:40</span></div><div class="msg-out"><span class="msg-content">Revísalos tranquilo, si querés te marco cuál tiene cocina separada y si te interesa alguno coordinamos visita ✅</span><span class="msg-time">30/04 21:40</span></div><div class="msg-in"><span class="msg-content">Pero esos no son los de roca de pozo<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://www.instagram.com/p/DXhvU_pjO5d/</span><span class="msg-time">30/04 21:42</span></div><div class="msg-in"><span class="msg-content">Con financiación</span><span class="msg-time">30/04 21:42</span></div><div class="msg-out"><span class="msg-content">Entiendo, buscás en Roca de Pozo y con financiación.</span><span class="msg-time">30/04 21:44</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-230" data-text="uberlinda 1 dorm en garibaldi con cochera. le ofrecimos garibaldi 431 pero sin cochera. cochera">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Uberlinda</div>
+        <div class="card-phone">+5492494011290</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">COCHERA</span>
+        <button class="btn-delete" onclick="eliminar(230)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> 1 dorm en Garibaldi con cochera. Le ofrecimos Garibaldi 431 pero sin cochera.</div>
+    <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 03/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494011290" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(230)">📋 Ver chat (8 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="230" data-name="Uberlinda"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-230">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola, me pasas información de los departamentos de Garibaldi? Gracias</span><span class="msg-time">03/05 18:15</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠  <br>Contame cuántos ambientes buscás y con qué presupuesto manejás en USD, así te paso opciones de Garibaldi.</span><span class="msg-time">03/05 18:17</span></div><div class="msg-in"><span class="msg-content">Me interesa de 1 dormitorio!!</span><span class="msg-time">03/05 18:52</span></div><div class="msg-out"><span class="msg-content">Perfecto, de 1 dormitorio.</span><span class="msg-time">03/05 18:54</span></div><div class="msg-out"><span class="msg-content">Me pasás tu presupuesto en USD y te paso las opciones de Garibaldi.</span><span class="msg-time">03/05 18:54</span></div><div class="msg-out"><span class="msg-content">https://propiedades.santiagofunes.com.ar/propiedades/departamento-garibaldi-431-piso-4-frente</span><span class="msg-time">03/05 21:39</span></div><div class="msg-in"><span class="msg-content">Hola, ok, muchas gracias!! Busco con cochera!!</span><span class="msg-time">03/05 21:47</span></div><div class="msg-in"><span class="msg-content">Muchas gracias 👍</span><span class="msg-time">03/05 21:49</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-227" data-text="juan m. pedro quiere ver opciones, contado o financiación. lead sin calificar, vale contacto directo. sin calificar">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Juan M. Pedro</div>
+        <div class="card-phone">+5492494520998</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">SIN CALIFICAR</span>
+        <button class="btn-delete" onclick="eliminar(227)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Quiere ver opciones, contado o financiación. Lead sin calificar, vale contacto directo.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494520998" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(227)">📋 Ver chat (13 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="227" data-name="Juan M. Pedro"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-227">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola, me pasarías los precios?</span><span class="msg-time">03/05 12:46</span></div><div class="msg-out"><span class="msg-content">Hola, soy Sofía, secretaria de Santiago 🏠  <br>Contame qué zona te interesa, cuántos ambientes buscás y con qué presupuesto manejás en USD.</span><span class="msg-time">03/05 12:47</span></div><div class="msg-in"><span class="msg-content">Hola, estoy viendo opciones y alternativas y quería saber qué ofrecían, de un pago o financiación</span><span class="msg-time">03/05 13:00</span></div><div class="msg-out"><span class="msg-content">Dale, te paso opciones.</span><span class="msg-time">03/05 13:02</span></div><div class="msg-out"><span class="msg-content">Contame qué zona te interesa, cuántos ambientes buscás y con qué presupuesto en USD contás.</span><span class="msg-time">03/05 13:02</span></div><div class="msg-out"><span class="msg-content">Lo de contado o financiación lo maneja Santiago directamente, se lo paso y te contesta él.</span><span class="msg-time">03/05 13:02</span></div><div class="msg-in"><span class="msg-content">No tengo una preferencia de lugar</span><span class="msg-time">03/05 13:03</span></div><div class="msg-in"><span class="msg-content">Y de plata, habría que ver con la financiación</span><span class="msg-time">03/05 13:03</span></div><div class="msg-out"><span class="msg-content">Perfecto, eso lo maneja Santiago directamente y se lo paso.  <br>Mientras tanto, contame cuántos ambientes estarías buscando para ir filtrando opciones.</span><span class="msg-time">03/05 13:05</span></div><div class="msg-in"><span class="msg-content">Gracias</span><span class="msg-time">03/05 13:09</span></div><div class="msg-in"><span class="msg-content">De una habitación</span><span class="msg-time">03/05 13:09</span></div><div class="msg-out"><span class="msg-content">Folleto.pdf</span><span class="msg-time">03/05 21:48</span></div><div class="msg-out"><span class="msg-content">Fideicomiso Roca 36.docx</span><span class="msg-time">03/05 21:48</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-190" data-text="soraya recibió opciones, dijo 'estoy evaluando'. sin seguimiento. vale un ping. evaluando">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Soraya</div>
+        <div class="card-phone">+5492494564707</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">EVALUANDO</span>
+        <button class="btn-delete" onclick="eliminar(190)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Recibió opciones, dijo 'estoy evaluando'. Sin seguimiento. Vale un ping.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494564707" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(190)">📋 Ver chat (2 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="190" data-name="Soraya"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-190">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Buen día, ¿cómo le va?<br><br>Quería consultarle si había podido revisar un par de las opciones que le había mandado, qué le habían parecido y si quiere que ajustemos la búsqueda. Estamos a disposición.</span><span class="msg-time">29/04 14:26</span></div><div class="msg-in"><span class="msg-content">Buenos días.<br>Estoy evaluando</span><span class="msg-time">29/04 15:09</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-167" data-text="mery estarán en tandil en julio. siguen buscando. coordinar visitas para ese momento. julio">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Mery</div>
+        <div class="card-phone">+5492945443030</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-visita">JULIO</span>
+        <button class="btn-delete" onclick="eliminar(167)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Estarán en Tandil en julio. Siguen buscando. Coordinar visitas para ese momento.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492945443030" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(167)">📋 Ver chat (4 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="167" data-name="Mery"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-167">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola, buen día. ¿Cómo estás? Quería saber cómo viene su búsqueda. ¿Se habían podido revisar los que yo les pasé? Decirle que estamos a disposición para ayudarlos en lo que necesiten.</span><span class="msg-time">29/04 14:18</span></div><div class="msg-in"><span class="msg-content">Hola Santiago, gracias por consultar !! Seguimos en la búsqueda de alguna buena oportunidad!! Igualmente en Julio estamos por allá, seguro te contactamos</span><span class="msg-time">29/04 15:24</span></div><div class="msg-out"><span class="msg-content">Perfecto, estamos en contacto, hay muchos desarrollos hoy en tandil, y tenemos acceso a la mayoria, asi que cualquier consulta estamos a disposicion</span><span class="msg-time">29/04 15:24</span></div><div class="msg-in"><span class="msg-content">Gracias!!</span><span class="msg-time">29/04 15:27</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-86" data-text="maria olinda glorioso quería visitar paz 80. respuesta confusa del agente. necesita re-agendar. visita">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Maria Olinda Glorioso</div>
+        <div class="card-phone">+5492281413507</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-visita">VISITA</span>
+        <button class="btn-delete" onclick="eliminar(86)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Quería visitar Paz 80. Respuesta confusa del agente. Necesita re-agendar.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 02/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492281413507" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(86)">📋 Ver chat (13 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="86" data-name="Maria Olinda Glorioso"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-86">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Buenisimo!</span><span class="msg-time">22/04 14:56</span></div><div class="msg-out"><span class="msg-content">Cualquier duda aca estoy, me manda mensaje o hacemos un llamado</span><span class="msg-time">22/04 14:56</span></div><div class="msg-out"><span class="msg-content">Hola, buen día. ¿Cómo estás? ¿Pudiste hablar con tu esposo la semana pasada? ¿Cómo viene todo? Quieren que sigamos buscando opciones. Quedo atento.</span><span class="msg-time">29/04 14:27</span></div><div class="msg-in"><span class="msg-content">Hola como estas</span><span class="msg-time">29/04 14:34</span></div><div class="msg-in"><span class="msg-content">Seguimos en la busqueda pero estoy con mucho trabajo ahora y he postegado  este tema</span><span class="msg-time">29/04 14:36</span></div><div class="msg-in"><span class="msg-content">Buenas tardes perdon la molestia un feriado. Mañana estamos viajando a Tandil y queria consultarte la posibilidad de visitar  el depto de la calle Paz 80. Avisame si es posible nosotros  a partir de las 13 hs podriamos gracias</span><span class="msg-time">01/05 21:53</span></div><div class="msg-out"><span class="msg-content">San Martín 1113 es la dirección</span><span class="msg-time">02/05 13:10</span></div><div class="msg-in"><span class="msg-content">👌👌</span><span class="msg-time">02/05 13:10</span></div><div class="msg-out"><span class="msg-content">Dale te espero</span><span class="msg-time">02/05 16:25</span></div><div class="msg-out"><span class="msg-content">Nos vemos 13:30 ahí?</span><span class="msg-time">02/05 16:25</span></div><div class="msg-in"><span class="msg-content">Dale yendo</span><span class="msg-time">02/05 16:27</span></div><div class="msg-out"><span class="msg-content">Okk yendo</span><span class="msg-time">02/05 16:31</span></div><div class="msg-in"><span class="msg-content">Graciassss</span><span class="msg-time">02/05 17:25</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-112" data-text="josefina pascua escribió 'quiero consultar' desde un anuncio. nunca especificó qué. sin seguimiento. sin calificar">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Josefina Pascua</div>
+        <div class="card-phone">+5492494664828</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">SIN CALIFICAR</span>
+        <button class="btn-delete" onclick="eliminar(112)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Escribió 'quiero consultar' desde un anuncio. Nunca especificó qué. Sin seguimiento.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494664828" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(112)">📋 Ver chat (5 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="112" data-name="Josefina Pascua"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-112">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">¡Hola! Quiero más información<br><br><br>**🏡 Propiedades desde USD 100.000**<br>🏡 Propiedades de media y alta gama en Tandil.<br><br>Casas y departamentos desde...<br>https://fb.me/4vJNDLzjL</span><span class="msg-time">25/04 02:05</span></div><div class="msg-out"><span class="msg-content">Hola jose como estas?</span><span class="msg-time">25/04 14:24</span></div><div class="msg-out"><span class="msg-content">Gracias por el contacto!<br>Decime. Que estas buscando exactamente?</span><span class="msg-time">25/04 14:24</span></div><div class="msg-in"><span class="msg-content">Hola</span><span class="msg-time">30/04 16:33</span></div><div class="msg-in"><span class="msg-content">Quiero consultar</span><span class="msg-time">30/04 16:34</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-157" data-text="julio césar lópez cochera en radio 5 cuadras de 9 de julio entre montevideo y pellegrini (centro). cochera">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Julio César López</div>
+        <div class="card-phone">+5492281303092</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">COCHERA</span>
+        <button class="btn-delete" onclick="eliminar(157)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Cochera en radio 5 cuadras de 9 de Julio entre Montevideo y Pellegrini (centro).</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492281303092" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(157)">📋 Ver chat (2 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="157" data-name="Julio César López"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-157">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola Julio, buen día. ¿Cómo le va?<br><br>Sabe que estoy queriendo escuchar el audio que usted me mandó hace casi un mes para poder ayudarlo. Estamos haciendo recontacto con clientes que nos mandaron y no pudimos ayudar. Así que quiere comentarme un poco de nuevo si sigue con la búsqueda y nos comunicamos con usted y, bueno, lo ayudamos en lo que sea necesario.</span><span class="msg-time">29/04 14:17</span></div><div class="msg-in"><span class="msg-content">Busco  comprar cochera en un radio no más de 5 cuadras dentro de  donde vivo en calle 9 de julio entre calles Montevideo y Pellegrini ,gracias por tenerme en cuenta</span><span class="msg-time">29/04 16:40</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-106" data-text="mirta vino de anuncio, nunca especificó. vale un intento más de contacto. sin respuesta">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Mirta</div>
+        <div class="card-phone">+5492494279832</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-hot">SIN RESPUESTA</span>
+        <button class="btn-delete" onclick="eliminar(106)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Vino de anuncio, nunca especificó. Vale un intento más de contacto.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492494279832" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(106)">📋 Ver chat (2 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="106" data-name="Mirta"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-106">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Hola! Estoy interesado en comprar una propiedad en Tandil.<br><br><br>**🏡 Propiedades desde USD 50.000**<br>🏡 Propiedades de media y alta gama en Tandil<br><br>Casas y departamentos desde ...<br>https://fb.me/6Q1n0LbQ4</span><span class="msg-time">24/04 10:42</span></div><div class="msg-out"><span class="msg-content">Hola Mirtha, buen día. Resulta que nos había quedado su mensaje. Abajo quiere comentarme qué tipo de propiedad está buscando comprar.</span><span class="msg-time">29/04 14:27</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-228" data-text="myrian recibió 3 opciones usd 60-80k. respondió solo 'e' (cortado). sin confirmación. evaluando">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Myrian</div>
+        <div class="card-phone">+5492262496453</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">EVALUANDO</span>
+        <button class="btn-delete" onclick="eliminar(228)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Recibió 3 opciones USD 60-80k. Respondió solo 'E' (cortado). Sin confirmación.</div>
+    <div class="card-meta"><span class="status-dot dot-snoozed"></span>Pospuesta · 03/05</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492262496453" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(228)">📋 Ver chat (10 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="228" data-name="Myrian"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-228">
+    <div class="chat-inner"><div class="msg-in"><span class="msg-content">Este mensaje se ha eliminado</span><span class="msg-time">03/05 14:10</span></div><div class="msg-out"><span class="msg-content">Dale, ya te paso opciones 🏠<br><br>Tengo estas 3:</span><span class="msg-time">03/05 14:11</span></div><div class="msg-out"><span class="msg-content">🏠 DEPARTAMENTO - Liniers y Cuba<br>📐 3 amb · 0 m²<br>💰 USD 60.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmokeefhh0005oi01iuw1jt0z</span><span class="msg-time">03/05 14:12</span></div><div class="msg-out"><span class="msg-content">🏠 DEPARTAMENTO - Guatemala 1098<br>📐 2 amb · 40 m²<br>💰 USD 80.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog7a3nl007voe01xk6v5itn</span><span class="msg-time">03/05 14:12</span></div><div class="msg-out"><span class="msg-content">🏠 Departamento - paz 80<br>📐 3 amb · 50 m²<br>💰 USD 71.000<br>🔗 https://propiedades.santiagofunes.com.ar/propiedades/cmog79ph9007toe01n1qowtg6</span><span class="msg-time">03/05 14:12</span></div><div class="msg-out"><span class="msg-content">Revísalos tranquilo, si tenés dudas me avisás y si querés hacer visita a alguno de ellos la arreglamos.</span><span class="msg-time">03/05 14:12</span></div><div class="msg-in"><span class="msg-content">Es de Pozo</span><span class="msg-time">03/05 14:13</span></div><div class="msg-in"><span class="msg-content">??</span><span class="msg-time">03/05 14:13</span></div><div class="msg-out"><span class="msg-content">Eso lo maneja Santiago directamente, se lo paso y te contesta él. Mientras tanto, si querés decime cuál de las opciones te interesa y te digo los datos que tenemos.</span><span class="msg-time">03/05 14:14</span></div><div class="msg-in"><span class="msg-content">Gracias</span><span class="msg-time">03/05 14:15</span></div></div>
+  </div>
+</div><div class="card comprador" id="card-174" data-text="sergio geremia hasta usd 90k. dijo 'si aparece algo avisame'. contactar si hay novedad en ese rango. hasta 90k">
+  <div class="card-top">
+    <div class="card-header">
+      <div>
+        <div class="card-name">Sergio Geremia</div>
+        <div class="card-phone">+5492364643984</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="tag tag-credito">HASTA 90K</span>
+        <button class="btn-delete" onclick="eliminar(174)" title="Eliminar">✕</button>
+      </div>
+    </div>
+    <div class="card-busca"><strong>Busca:</strong> Hasta USD 90k. Dijo 'si aparece algo avisame'. Contactar si hay novedad en ese rango.</div>
+    <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04</div>
+    <div class="card-actions">
+      <a class="btn btn-wa" href="https://wa.me/5492364643984" target="_blank">💬 WhatsApp</a>
+      <button class="btn btn-toggle" onclick="toggleChat(174)">📋 Ver chat (4 msgs)</button>
+      <label class="checkbox-wrap"><input type="checkbox" onchange="updateSeleccion()" data-id="174" data-name="Sergio Geremia"> Seleccionar</label>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-174">
+    <div class="chat-inner"><div class="msg-out"><span class="msg-content">Hola, buen día, querido. ¿Cómo andás? ¿Todo bien?<br><br>Quería saber cómo venía tu búsqueda, si has avanzado algo, si has visto algunas otras cosas. A ver en qué te podemos ayudar.</span><span class="msg-time">29/04 14:19</span></div><div class="msg-in"><span class="msg-content">Buen día ....pude verni muy poco y ando en otros temas por el momento...pero si aparece algo igualmente avísame...gracias por escribir</span><span class="msg-time">29/04 14:30</span></div><div class="msg-in"><span class="msg-content">No mayor a 90.000..dolares</span><span class="msg-time">29/04 14:30</span></div><div class="msg-out"><span class="msg-content">perfecto, estamos en contacto</span><span class="msg-time">29/04 15:25</span></div></div>
+  </div>
+</div></div>
 </div>
 
 <script>
+function toggleChat(id) {
+  const box = document.getElementById('chat-' + id);
+  box.classList.toggle('open');
+}
+function eliminar(id) {
+  document.getElementById('card-' + id).classList.add('hidden');
+  updateSeleccion();
+}
 function filtrar(q) {
   q = q.toLowerCase();
   document.querySelectorAll('.card').forEach(card => {
-    const text = card.dataset.text + ' ' + card.innerText.toLowerCase();
+    const text = card.dataset.text + ' ' + card.querySelector('.card-busca').innerText.toLowerCase();
     card.classList.toggle('hidden', q.length > 0 && !text.includes(q));
   });
 }
+function expandirTodos() {
+  document.querySelectorAll('.chat-box:not(.hidden)').forEach(b => b.classList.add('open'));
+}
+function contraerTodos() {
+  document.querySelectorAll('.chat-box').forEach(b => b.classList.remove('open'));
+}
+function updateSeleccion() {
+  const checks = document.querySelectorAll('input[type=checkbox]:checked');
+  const panel = document.getElementById('seleccion-panel');
+  const count = document.getElementById('seleccion-count');
+  const lista = document.getElementById('seleccion-lista');
+  count.textContent = checks.length;
+  if (checks.length > 0) {
+    panel.classList.add('visible');
+    lista.innerHTML = Array.from(checks).map(c => {
+      const card = c.closest('.card');
+      const name = c.dataset.name;
+      const phone = card.querySelector('.card-phone').textContent;
+      const busca = card.querySelector('.card-busca').textContent;
+      return `<div>• ${name} (${phone}) — ${busca}</div>`;
+    }).join('');
+  } else {
+    panel.classList.remove('visible');
+  }
+}
+function copiarSeleccion() {
+  const lista = document.getElementById('seleccion-lista').innerText;
+  if (!lista) return;
+  navigator.clipboard.writeText(lista).then(() => alert('Copiado al portapapeles'));
+}
 </script>
-
 </body>
 </html>
