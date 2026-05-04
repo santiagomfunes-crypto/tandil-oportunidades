@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recontacto — Altavista Otero</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a1a; }
+  header { background: #0B1F33; color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  header p { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .badge-count { background: #7AB591; color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #7AB591; margin-bottom: 12px; margin-top: 28px; }
+  .section-title:first-child { margin-top: 0; }
+  .priority-banner { background: #fff3cd; border-left: 4px solid #f59e0b; padding: 12px 16px; margin-bottom: 20px; border-radius: 0 6px 6px 0; }
+  .priority-banner p { font-size: 12px; color: #92400e; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .card { background: white; border-radius: 8px; padding: 16px; border: 1px solid #e5e7eb; position: relative; }
+  .card.priority { border-left: 3px solid #ef4444; }
+  .card.roca { border-left: 3px solid #7AB591; }
+  .card.comprador { border-left: 3px solid #3b82f6; }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+  .card-name { font-size: 14px; font-weight: 700; color: #0B1F33; }
+  .card-phone { font-size: 11px; color: #6b7280; margin-top: 1px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+  .tag-hot { background: #fee2e2; color: #ef4444; }
+  .tag-credito { background: #dbeafe; color: #1d4ed8; }
+  .tag-roca { background: #d1fae5; color: #065f46; }
+  .tag-visita { background: #ede9fe; color: #5b21b6; }
+  .card-busca { font-size: 12px; color: #374151; line-height: 1.5; margin-bottom: 10px; }
+  .card-busca strong { color: #0B1F33; }
+  .card-meta { font-size: 10px; color: #9ca3af; margin-bottom: 10px; }
+  .btn { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 5px; text-decoration: none; transition: opacity 0.15s; }
+  .btn:hover { opacity: 0.8; }
+  .btn-chat { background: #0B1F33; color: white; }
+  .btn-wa { background: #25D366; color: white; }
+  .search-bar { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 14px; width: 100%; font-size: 13px; margin-bottom: 20px; outline: none; }
+  .search-bar:focus { border-color: #7AB591; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .dot-open { background: #22c55e; }
+  .dot-snoozed { background: #f59e0b; }
+  .dot-pending { background: #94a3b8; }
+  .stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat { background: white; border-radius: 8px; padding: 14px 20px; border: 1px solid #e5e7eb; text-align: center; flex: 1; min-width: 100px; }
+  .stat-n { font-size: 28px; font-weight: 800; color: #0B1F33; }
+  .stat-l { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; margin-top: 2px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Recontacto · Altavista Otero</h1>
+    <p>Dashboard interno — Fernando · Actualizado 04/05/2026</p>
+  </div>
+  <span class="badge-count">39 para contactar</span>
+</header>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n" style="color:#ef4444">8</div><div class="stat-l">Prioridad alta</div></div>
+    <div class="stat"><div class="stat-n" style="color:#7AB591">13</div><div class="stat-l">Roca 36</div></div>
+    <div class="stat"><div class="stat-n" style="color:#3b82f6">18</div><div class="stat-l">Compradores</div></div>
+    <div class="stat"><div class="stat-n">39</div><div class="stat-l">Total</div></div>
+  </div>
+
+  <input type="text" class="search-bar" placeholder="Buscar por nombre o qué busca..." oninput="filtrar(this.value)" />
+
+  <div class="priority-banner">
+    <p>⚡ Empezar por los de borde rojo — leads con intención clara y sin respuesta</p>
+  </div>
+
+  <!-- PRIORIDAD ALTA -->
+  <p class="section-title">Prioridad alta</p>
+  <div class="grid" id="grid-priority">
+
+    <div class="card priority" data-text="gladys depto 1 dormitorio renta renta">
+      <div class="card-header">
+        <div><div class="card-name">Gladys</div><div class="card-phone">+5492494506415</div></div>
+        <span class="tag tag-hot">HOY</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm para renta, zona Rivadavia–Roca, USD 50.000–55.000. Escribió hoy y el bot no pudo enviarle nada.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494680104" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="gustavo galvan credito nacion iaf 2 ambientes">
+      <div class="card-header">
+        <div><div class="card-name">Gustavo Galvan</div><div class="card-phone">+5492494680104</div></div>
+        <span class="tag tag-credito">CRÉDITO</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto apto crédito Nación e IAF, pre-adjudicados en ambos. USD 50.000 aprox. Listo para comprar.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494350778" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="ana garcia 1 dormitorio centrico 60000">
+      <div class="card-header">
+        <div><div class="card-name">Ana Garcia</div><div class="card-phone">+5492494350778</div></div>
+        <span class="tag tag-hot">ACTIVA</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm zona céntrica, USD 60.000. Confirmó que sigue buscando y pidió opciones explícitamente.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494563423" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="facundo gimenez busqueda activa 2 ambientes">
+      <div class="card-header">
+        <div><div class="card-name">Facundo Gimenez</div><div class="card-phone">+5492494563423</div></div>
+        <span class="tag tag-hot">ACTIVA</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Búsqueda activa (confirmó "seguimos buscando"). Santiago dijo "dejame ver qué tengo" y nunca envió nada.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494307494" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="natalia san lorenzo 420 2 dormitorios visita">
+      <div class="card-header">
+        <div><div class="card-name">Natalia</div><div class="card-phone">+5492494307494</div></div>
+        <span class="tag tag-visita">VISITA</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> San Lorenzo 420, 2 dorm, USD 150.000. Pidió visita explícitamente, nunca se confirmó.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494308052" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="lisardo romero 2 dormitorios 150000 160000">
+      <div class="card-header">
+        <div><div class="card-name">Lisardo Romero</div><div class="card-phone">+5492494308052</div></div>
+        <span class="tag tag-hot">SIN RESPUESTA</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm, hasta USD 150.000–160.000. Conocido directo. Mensaje directo sin respuesta.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494647315" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="patricia cordoba inmobiliaria pozo roca 15000 entrada">
+      <div class="card-header">
+        <div><div class="card-name">Patricia Cordoba</div><div class="card-phone">+5492494647315</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Corredora con cliente para pozo Roca 36, entrada USD 15.000–18.000 + cuotas, 2 ambientes. Espera condiciones.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494690275" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card priority" data-text="mar busqueda activa departamento">
+      <div class="card-header">
+        <div><div class="card-name">Mar</div><div class="card-phone">+5492494690275</div></div>
+        <span class="tag tag-hot">ACTIVA</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Búsqueda activa confirmada. Santiago le dijo que hay ofertas nuevas pero nunca le envió nada concreto.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494690275" target="_blank">💬 WhatsApp</a>
+    </div>
+
+  </div>
+
+  <!-- ROCA 36 -->
+  <p class="section-title">Interesados en Roca 36 / Fideicomiso</p>
+  <div class="grid" id="grid-roca">
+
+    <div class="card roca" data-text="silvia garcia roca 36 fideicomiso inversion">
+      <div class="card-header">
+        <div><div class="card-name">Silvia Garcia</div><div class="card-phone">+5492262563890</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Inversión al pozo, primera vez, hasta USD 100.000, prioridad renta futura. Santiago la contactó hoy.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5493875607019" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="cach chocobar roca 36 primera vez hablar">
+      <div class="card-header">
+        <div><div class="card-name">Cach (Cristian Chocobar)</div><div class="card-phone">+5493875607019</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, primera vez invirtiendo, quiere hablarlo por teléfono. Recibió folleto, espera llamada.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494692661" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="dany roca 36 avellaneda fideicomiso">
+      <div class="card-header">
+        <div><div class="card-name">Dany 🌹</div><div class="card-phone">+5492494692661</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Edificio en construcción Avellaneda y Roca. Vio en redes. Espera que Santiago la contacte directamente.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492262643056" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="eduardo uzcudun roca 36 financiacion">
+      <div class="card-header">
+        <div><div class="card-name">Eduardo Uzcudun</div><div class="card-phone">+5492262643056</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Proyecto Avellaneda y Roca. Santiago iba a contactarlo por financiación. Sin seguimiento concreto.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 02/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494559499" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="facundo samartino roca 36 pozo precio entrada">
+      <div class="card-header">
+        <div><div class="card-name">Facundo Samartino</div><div class="card-phone">+5492494559499</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Deptos al pozo Roca 36, preguntó precios de entrada. Recibió folleto, sin respuesta.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492281596168" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="franco arana frankitox roca 36 primera vez">
+      <div class="card-header">
+        <div><div class="card-name">Franco Arana (Frankitox)</div><div class="card-phone">+5492281596168</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, primera vez, quiere entender condiciones. Error de envío — nunca recibió info real.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494589603" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="martin amaya roca 36 primera vez 100000">
+      <div class="card-header">
+        <div><div class="card-name">Martín Amaya</div><div class="card-phone">+5492494589603</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, ticket menor posible, hasta USD 100.000, primera vez. Sin seguimiento real.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494214483" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="mario balbi roca 36 inversion renta pozo">
+      <div class="card-header">
+        <div><div class="card-name">Mario Balbi</div><div class="card-phone">+5492494214483</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, ya invirtió en pozo antes, prioridad renta futura. Santiago solo dijo "Hola" y no más.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5491158129046" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="carlos alberto pozo fideicomiso folleto">
+      <div class="card-header">
+        <div><div class="card-name">Carlos Alberto</div><div class="card-phone">+5491158129046</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Proyecto al pozo, recibió folleto Roca 36. Hubo respuesta pero conversación cortada sin cierre.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494497576" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="fernando musons roca 36 fideicomiso">
+      <div class="card-header">
+        <div><div class="card-name">Fernando Musons Tozzetto</div><div class="card-phone">+5492494497576</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Fideicomiso Roca 36, recibió folleto. Nunca respondió. Sin seguimiento posterior.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494564381" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="maximiliano barros roca 36 amigo hija">
+      <div class="card-header">
+        <div><div class="card-name">Maximiliano Barros</div><div class="card-phone">+5492494564381</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Roca 36 para hija de un amigo. Le pasó el folleto. Hay comprador potencial indirecto, sin seguimiento.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5491168945858" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="rama roca 36 pozo anticipo cuotas propiedad buenos aires">
+      <div class="card-header">
+        <div><div class="card-name">Rama</div><div class="card-phone">+5491168945858</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto al pozo Roca 36, 30% anticipo + cuotas. Tiene propiedad en BsAs en venta (posible canje/financiación).</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 01/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5491121795145" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card roca" data-text="agustin que otra cosa tenes opciones">
+      <div class="card-header">
+        <div><div class="card-name">Agustin</div><div class="card-phone">+5491121795145</div></div>
+        <span class="tag tag-roca">ROCA 36</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Recibió Roca 36 y preguntó "¿qué otra cosa tenés?". Sin respuesta. Quiere ver más opciones.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5491121795145" target="_blank">💬 WhatsApp</a>
+    </div>
+
+  </div>
+
+  <!-- COMPRADORES -->
+  <p class="section-title">Compradores — sin opciones enviadas</p>
+  <div class="grid" id="grid-compradores">
+
+    <div class="card comprador" data-text="bautista dimarco 2 dormitorios 100000 200000 inversion">
+      <div class="card-header">
+        <div><div class="card-name">Bautista Dimarco</div><div class="card-phone">+5492494609488</div></div>
+        <span class="tag tag-credito">RECIBIÓ OPCIONES</span>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm, USD 100.000–200.000, buena inversión. Recibió 3 opciones, nunca respondió. Sin seguimiento.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492346510845" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="silvi pasqualotto 2 habitaciones centro 200000">
+      <div class="card-header">
+        <div><div class="card-name">Silvi Pasqualotto</div><div class="card-phone">+5492346510845</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 2 habitaciones, zona centro o semicéntrico, hasta USD 200.000. Recibió link pero conversación cortada.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 04/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492983646223" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="jorge daddario 1 dormitorio 70000 90000">
+      <div class="card-header">
+        <div><div class="card-name">Jorge Daddario</div><div class="card-phone">+5492983646223</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm, USD 70.000–90.000. Recibió una opción equivocada (no era 1 dorm). Faltan opciones reales.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 02/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494309320" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="nico quintana garibaldi 431 2 dormitorios revalorizacion">
+      <div class="card-header">
+        <div><div class="card-name">Nico (Personal trainer)</div><div class="card-phone">+5492494309320</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Garibaldi 431, 2 dorm, prioridad revalorización. Completó formulario, bot pidió presupuesto, sin respuesta.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492266481510" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="eugenia juarez san lorenzo 420 2 dormitorios 150000 200000">
+      <div class="card-header">
+        <div><div class="card-name">Eugenia Juarez</div><div class="card-phone">+5492266481510</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> San Lorenzo 420, 2 dorm, USD 150.000–200.000. Recibió opciones pero no confirmó visita.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492932543538" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="andrés flores 2 dormitorios ascensor cochera">
+      <div class="card-header">
+        <div><div class="card-name">Andrés Flores</div><div class="card-phone">+5492932543538</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 2 dorm con ascensor y cochera. Visita en Tandil próxima. Nunca recibió opciones concretas.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5491162866801" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="santiago rocco 2 ambientes centro 200000">
+      <div class="card-header">
+        <div><div class="card-name">Santiago Rocco</div><div class="card-phone">+5491162866801</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 2 ambientes zona centro, hasta USD 200.000. Recibió 3 opciones, no respondió cuál le interesó.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494575679" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="albertito 2 ambientes cocina separada roca 80000 100000">
+      <div class="card-header">
+        <div><div class="card-name">Albertito</div><div class="card-phone">+5492494575679</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 2 amb con cocina separada en Roca, USD 80.000–100.000. Recibió una opción, sin seguimiento.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494011290" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="uberlinda garibaldi cochera 1 dormitorio">
+      <div class="card-header">
+        <div><div class="card-name">Uberlinda</div><div class="card-phone">+5492494011290</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Depto 1 dorm en Garibaldi con cochera. Le enviamos Garibaldi 431 pero no tiene cochera. Sin alternativas.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Abierta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494520998" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="juan m pedro opciones contado financiacion">
+      <div class="card-header">
+        <div><div class="card-name">Juan M. Pedro</div><div class="card-phone">+5492494520998</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Quiere ver opciones, contado o financiación. Lead interesado pero sin calificar. Vale contacto directo.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494564707" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="soraya evaluando opciones">
+      <div class="card-header">
+        <div><div class="card-name">Soraya</div><div class="card-phone">+5492494564707</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Recibió opciones, dijo "estoy evaluando". Sin seguimiento posterior. Vale un ping.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492945443030" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="mery julio visita tandil">
+      <div class="card-header">
+        <div><div class="card-name">Mery</div><div class="card-phone">+5492945443030</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Estarán en Tandil en julio. Confirmó que siguen buscando. Coordinar visitas para ese momento.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492281413507" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="maria olinda paz 80 visita">
+      <div class="card-header">
+        <div><div class="card-name">Maria Olinda Glorioso</div><div class="card-phone">+5492281413507</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Quería visitar Paz 80. Respuesta confusa del agente (dirección distinta). Necesita aclaración y re-agendar.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 02/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494664828" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="josefina pascua consultar sin detalle">
+      <div class="card-header">
+        <div><div class="card-name">Josefina Pascua</div><div class="card-phone">+5492494664828</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Escribió "quiero consultar" desde un anuncio. Nunca especificó qué. Sin seguimiento.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492281303092" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="julio cesar lopez cochera centro 9 de julio montevideo pellegrini">
+      <div class="card-header">
+        <div><div class="card-name">Julio César López</div><div class="card-phone">+5492281303092</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Cochera en radio 5 cuadras de 9 de Julio entre Montevideo y Pellegrini (centro Tandil). Muy específico.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492494279832" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="mirta anuncio sin respuesta">
+      <div class="card-header">
+        <div><div class="card-name">Mirta</div><div class="card-phone">+5492494279832</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Vino de anuncio, nunca especificó. Santiago intentó recontacto sin respuesta. Vale un intento más.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492262496453" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="myrian 3 opciones sin respuesta">
+      <div class="card-header">
+        <div><div class="card-name">Myrian</div><div class="card-phone">+5492262496453</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Recibió 3 opciones entre USD 60k–80k. Respondió solo "E" (mensaje cortado). Sin confirmación de interés.</div>
+      <div class="card-meta"><span class="status-dot dot-open"></span>Pospuesta · 03/05/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492364643984" target="_blank">💬 WhatsApp</a>
+    </div>
+
+    <div class="card comprador" data-text="sergio geremia hasta 90000 otros temas avisar">
+      <div class="card-header">
+        <div><div class="card-name">Sergio Geremia</div><div class="card-phone">+5492364643984</div></div>
+      </div>
+      <div class="card-busca"><strong>Busca:</strong> Hasta USD 90.000. Dijo "ando en otros temas, si aparece algo avisame". Contactar si hay novedad en ese rango.</div>
+      <div class="card-meta"><span class="status-dot dot-pending"></span>Pendiente · 30/04/2026</div>
+      <a class="btn btn-wa" href="https://wa.me/5492364643984" target="_blank">💬 WhatsApp</a>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function filtrar(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    const text = card.dataset.text + ' ' + card.innerText.toLowerCase();
+    card.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+  });
+}
+</script>
+
+</body>
+</html>
